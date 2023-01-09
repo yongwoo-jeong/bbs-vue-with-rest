@@ -19,7 +19,7 @@ public class ArticleRepository {
 	/**
 	 * 매퍼 네임스페이스 반복구문 스트링 처리
 	 */
-	private final String mapperName = "com.springboot.bbs.repository.ArticleRepository";
+	private final String mapperName = "com.springboot.bbsrestful.repository.ArticleRepository";
 
 	/**
 	 * sql 세션객체 생성자

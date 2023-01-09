@@ -1,4 +1,4 @@
-package com.example.bbsrestful;
+package com.springboot.bbsrestful;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

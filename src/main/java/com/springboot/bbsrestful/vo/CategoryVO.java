@@ -1,4 +1,4 @@
-package com.springboot.bbs.vo;
+package com.springboot.bbsrestful.vo;
 
 import lombok.Getter;
 import lombok.Setter;

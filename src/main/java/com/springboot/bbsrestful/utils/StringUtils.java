@@ -1,6 +1,6 @@
-package com.springboot.bbs.utils;
+package com.springboot.bbsrestful.utils;
 
-import com.springboot.bbs.vo.SearchCriteriaVO;
+import com.springboot.bbsrestful.vo.SearchCriteriaVO;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 

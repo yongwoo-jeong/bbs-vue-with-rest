@@ -1,4 +1,4 @@
-package com.springboot.bbs.utils;
+package com.springboot.bbsrestful.utils;
 
 import org.springframework.web.multipart.MultipartFile;
 
