@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.bbs.repository.ArticleRepository">
+  <!-- 검색조건 재활용을 위한 sql 프라그먼트 -->
+  <sql id="searchCondition">
+    <trim prefix="where (" suffix=")" prefixOverrides="AND">
+      <!-- 키워드 input 없을경우 조건에서 제외      -->
+      <if test='keyword != null and !keyword.equals("")' >
+        AND title LIKE CONCAT('%',#{keyword},'%')
+      </if>
+      <!-- 카테고리 선택없는 경우 조건에서 제외      -->
+      <if test='categoryId != null and categoryId != 0'>
+        AND category_id = #{categoryId}
+      </if>
+      <!-- 검색 시작날짜 없는경우 조건에서 제외      -->
+      <if test="startDate != null and !startDate.equals('')" >
+        AND created_at &gt;= #{startDate}
+        OR modified_at &gt;= #{startDate}
+      </if>
+      <!-- 검색 종료날짜 경우 조건에서 제외      -->
+      <if test="endDate != null and !endDate.equals('')" >
+        AND created_at &lt;= #{endDate}
+        OR modified_at &lt;= #{endDate}
+      </if>
+    </trim>
+  </sql>
+
+  <!-- 검색조건, 현재 페이지에 해당하는 Limit Offset 받아 해당하는 게시글 List 반환  -->
+  <select id="selectSearchArticles" resultType="com.springboot.bbs.vo.ArticleVO">
+    SELECT *
+    FROM   article
+    <include refid="searchCondition">
+        <property name="searchCriteria" value="searchCriteria"/>
+      </include>
+    ORDER BY article_id DESC
+    LIMIT #{dbLimitOffset}, 10
+  </select>
+
+  <!-- 검색조건, 현재 페이지에 해당하는 Limit Offset 받아 해당하는 게시글 수 반환 -->
+  <select id="selectCountArticles" resultType="Integer" >
+    SELECT COUNT(*) FROM article A
+    <include refid="searchCondition">
+      <property name="searchCriteria" value="searchCriteria"/>
+    </include>
+  </select>
+
+  <!-- 개별 게시글 보기 위해 해당하는 튜플 반환  -->
+  <select id="selectArticleDetail" resultType="com.springboot.bbs.vo.ArticleVO">
+    SELECT *
+    FROM   article
+    WHERE  article_id = #{articleId}
+  </select>
+
+
+  <select id="selectCategories" resultType="com.springboot.bbs.vo.CategoryVO">
+    SELECT *
+    FROM category
+  </select>
+
+<!--  &lt;!&ndash; 새 게시글 등록을 위한 INSERT 쿼리  &ndash;&gt;-->
+<!--  <insert id="insertArticle">-->
+<!--    INSERT INTO article-->
+<!--                (-->
+<!--                        title,-->
+<!--                        writer,-->
+<!--                        password,-->
+<!--                        content,-->
+<!--                        created_at,-->
+<!--                        category_id-->
+<!--                )-->
+<!--           VALUES-->
+<!--                (-->
+<!--                        #{title},-->
+<!--                        #{writer},-->
+<!--                        #{password},-->
+<!--                        #{content},-->
+<!--                        NOW(),-->
+<!--                        #{categoryId}-->
+<!--                )-->
+<!--    &lt;!&ndash; 파일 INSERT를 위해 해당 게시글 ID(FK)를 반환    &ndash;&gt;-->
+<!--    <selectKey keyProperty="articleId" resultType="int" order="AFTER">-->
+<!--      SELECT LAST_INSERT_ID()-->
+<!--    </selectKey>-->
+<!--  </insert>-->
+
+<!--  &lt;!&ndash; 조회수 증가를 위한 쿼리  &ndash;&gt;-->
+<!--  <update id="updateViewCount">-->
+<!--    UPDATE article-->
+<!--    SET view = view+1-->
+<!--    WHERE  article_id = #{articleId}-->
+<!--  </update>-->
+
+<!--  &lt;!&ndash;  삭제 &ndash;&gt;-->
+<!--  <delete id="deleteArticle">-->
+<!--    DELETE FROM article-->
+<!--    WHERE article_id= #{articleId}-->
+<!--  </delete>-->
+<!--  &lt;!&ndash; 업데이트  &ndash;&gt;-->
+<!--  <update id="updateArticle">-->
+<!--  UPDATE article-->
+<!--  SET writer=#{writer}, title=#{title}, content=#{content}, modified_at=NOW()-->
+<!--  WHERE article_id = #{articleId}-->
+<!--  </update>-->
+
+
+</mapper>
