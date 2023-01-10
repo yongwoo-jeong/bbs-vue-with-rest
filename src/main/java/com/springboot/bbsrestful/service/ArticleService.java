@@ -47,9 +47,14 @@ public class ArticleService {
 		return articleRepository.selectCountArticles(searchCriteria);
 	}
 
-
-
-
+	/**
+	 * 게시글 상세
+	 * @param articleId 게시글 id
+	 * @return 게시글 VO
+	 */
+	public ArticleVO selectArticle(Integer articleId){
+		return articleRepository.selectArticle(articleId);
+	}
 
 }
 

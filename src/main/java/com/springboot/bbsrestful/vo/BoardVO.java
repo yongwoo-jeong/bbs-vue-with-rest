@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * 게시글 검색결과(인덱스페이지)를 위한 VO
+ * 게시글 리스트페이지(루트)를 위한 VO
  */
 @Data
 @Builder

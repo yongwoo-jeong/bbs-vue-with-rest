@@ -36,7 +36,7 @@ public class ArticleRepository {
 	};
 
 	/**
-	 * 조건에 맞는 게시글 수를 반환
+	 * 조건에 맞는 게시글 수 SELECT COUNT
 	 * @param searchCriteria 검색조건 (searchCriteriaVO)
 	 * @return 검색된 게시글 수
 	 */
@@ -44,8 +44,21 @@ public class ArticleRepository {
 		return session.selectOne(mapperName + ".selectCountArticles",searchCriteria);
 	};
 
+	/**
+	 * 카테고리 리스트 가져오기 SELECT
+	 * @return
+	 */
 	public List<CategoryVO> selectCategories(){
 		return session.selectList(mapperName+".selectCategories");
+	}
+
+	/**
+	 * 게시글 상세 SELECT
+	 * @param articleId 게시글 id
+	 * @return
+	 */
+	public ArticleVO selectArticle(Integer articleId){
+		return session.selectOne(mapperName+".selectArticleDetail", articleId);
 	}
 
 }

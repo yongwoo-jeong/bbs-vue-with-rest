@@ -40,7 +40,7 @@
 
   <!-- 검색조건, 현재 페이지에 해당하는 Limit Offset 받아 해당하는 게시글 수 반환 -->
   <select id="selectCountArticles" resultType="Integer" >
-    SELECT COUNT(*) FROM article A
+    SELECT COUNT(*) FROM article
     <include refid="searchCondition">
       <property name="searchCriteria" value="searchCriteria"/>
     </include>

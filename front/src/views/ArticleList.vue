@@ -17,6 +17,9 @@
       <input type="text" />
       <input type="submit" value="검색" />
     </form>
+    <div>
+      <span>검색된 게시글: {{ searchedCount }}</span>
+    </div>
   </div>
   <div>
     <table style="border-collapse: collapse">
@@ -66,6 +69,7 @@ export default {
       articleList: [],
       categoryList: [],
       categoryObject: {},
+      searchedCount: Number,
     };
   },
   // 게시글 정보받아오기
@@ -77,11 +81,11 @@ export default {
     this.categoryObject = await boardJson.data["categoryList"].reduce(
       (newObj, obj) => {
         newObj[obj["categoryId"]] = obj["categoryName"];
-        console.log(obj.key, obj.value);
         return newObj;
       },
       {}
     );
+    this.searchedCount = boardJson.data["searchedArticleCount"];
   },
 };
 </script>

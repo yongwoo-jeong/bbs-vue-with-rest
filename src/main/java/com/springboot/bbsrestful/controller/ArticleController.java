@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -37,7 +39,7 @@ public class ArticleController {
 	 * @return boardData 보드 VO
 	 */
 	@GetMapping("/api/v1/articles")
-	public BoardVO homeController(Model model, @ModelAttribute SearchCriteriaVO searchCriteria){
+	public BoardVO articleListController(Model model, @ModelAttribute SearchCriteriaVO searchCriteria){
 		// 카테고리명
 		List<CategoryVO> categories = articleService.selectCategories();
 		// DB SELECT LIMIT offset 설정
@@ -47,6 +49,14 @@ public class ArticleController {
 		int countArticles =  articleService.selectSearchedArticleCount(searchCriteria);
 		BoardVO boardData = BoardVO.builder().articleList(searchedArticles).searchedArticleCount(countArticles).categoryList(categories).build();
 		return boardData;
+	}
+
+	@GetMapping("/api/v1/articles/{id}")
+	public ArticleVO articleDetailController(@PathVariable("id") Integer id){
+		System.out.println(id);
+		ArticleVO articleDetail = articleService.selectArticle(id);
+		return articleDetail;
+
 	}
 
 }
