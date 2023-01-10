@@ -54,11 +54,10 @@
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
-import axios from "axios";
 // @ is an alias to /src
 
 export default {
-  name: "MainBoard",
+  name: "ArticleList",
   components: {
     HeaderTitle,
   },
@@ -69,8 +68,9 @@ export default {
       categoryObject: {},
     };
   },
+  // 게시글 정보받아오기
   async created() {
-    const boardJson = await axios.get("/api/v1/articles");
+    const boardJson = await this.axios.get("/api/v1/articles");
     this.articleList = boardJson.data["articleList"];
     this.categoryList = await boardJson.data["categoryList"];
     // 카테고리 표현을 위해 카테고리 리스트를 맵형태로 교체
