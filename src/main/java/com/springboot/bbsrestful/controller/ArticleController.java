@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -31,15 +30,14 @@ public class ArticleController {
 	private String serverFilePath;
 
 	/**
-	 * 홈페이지(/) GET 매핑
-	 * TODO 파일 이너 조인으로 가져와야 파일 표시가능
-	 *
-	 * @param model          애트리뷰트 설정을 위한 모델객체
+	 * GET /articles
+	 * 게시글 리스트, 게시글 수, 카테고리 리스트 반환
+	 * TODO 파일 이너 조인으로 가져와야 파일 표시가능 -> 파일 여부를 컬럼으로 만들어주는게..
 	 * @param searchCriteria 검색조건, 조건이 없을 경우 아티클매퍼에서 trim 처리로 조건 제외
 	 * @return boardData 보드 VO
 	 */
 	@GetMapping("/api/v1/articles")
-	public BoardVO articleListController(Model model, @ModelAttribute SearchCriteriaVO searchCriteria){
+	public BoardVO articleListController(@ModelAttribute SearchCriteriaVO searchCriteria){
 		// 카테고리명
 		List<CategoryVO> categories = articleService.selectCategories();
 		// DB SELECT LIMIT offset 설정
@@ -51,12 +49,16 @@ public class ArticleController {
 		return boardData;
 	}
 
+	/**
+	 * GET /articles
+	 * 게시글 상세, 댓글, 파일 리스트 반환
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/v1/articles/{id}")
 	public ArticleVO articleDetailController(@PathVariable("id") Integer id){
-		System.out.println(id);
 		ArticleVO articleDetail = articleService.selectArticle(id);
 		return articleDetail;
-
 	}
 
 }

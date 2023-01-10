@@ -26,15 +26,12 @@ export default {
     };
   },
   async created() {
+    // path variable 획득
     const articleId = this.$route.params.id;
+    // api hit
     const articleDetail = await this.axios.get(`/api/v1/articles/${articleId}`);
     this.article = articleDetail;
     console.log(this.article);
-  },
-  computed: {
-    articleId() {
-      return parseInt(this.$route.params.id);
-    },
   },
 };
 </script>
