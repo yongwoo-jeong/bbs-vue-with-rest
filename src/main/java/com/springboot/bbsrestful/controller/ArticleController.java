@@ -36,7 +36,7 @@ public class ArticleController {
 	 * @param searchCriteria 검색조건, 조건이 없을 경우 아티클매퍼에서 trim 처리로 조건 제외
 	 * @return boardData 보드 VO
 	 */
-	@GetMapping("/api")
+	@GetMapping("/api/v1/articles")
 	public BoardVO homeController(Model model, @ModelAttribute SearchCriteriaVO searchCriteria){
 		// 카테고리명
 		List<CategoryVO> categories = articleService.selectCategories();
