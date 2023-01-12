@@ -57,6 +57,7 @@
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
+import { api } from "@/api/api";
 // @ is an alias to /src
 
 export default {
@@ -74,18 +75,11 @@ export default {
   },
   // 게시글 정보받아오기
   async created() {
-    const boardJson = await this.axios.get("/api/v1/articles");
-    this.articleList = boardJson.data["articleList"];
-    this.categoryList = await boardJson.data["categoryList"];
-    // 카테고리 표현을 위해 카테고리 리스트를 맵형태로 교체
-    this.categoryObject = await boardJson.data["categoryList"].reduce(
-      (newObj, obj) => {
-        newObj[obj["categoryId"]] = obj["categoryName"];
-        return newObj;
-      },
-      {}
-    );
-    this.searchedCount = boardJson.data["searchedArticleCount"];
+    const boardInfo = await api.getBoardInfo();
+    console.log(boardInfo);
+  },
+  methods: {
+    async init() {},
   },
 };
 </script>
