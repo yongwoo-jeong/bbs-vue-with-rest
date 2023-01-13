@@ -8,10 +8,10 @@
         <option>전체 카테고리</option>
         <option
           v-for="category in categoryList"
-          :key="category['categoryId']"
+          :key="category.categoryId"
           :value="category.categoryId"
         >
-          {{ category["categoryName"] }}
+          {{ category.categoryName }}
         </option>
       </select>
       <input type="text" />
@@ -32,24 +32,28 @@
         <th>등록일시</th>
         <th>수정일시</th>
       </tr>
-      <tr v-for="article in articleList" :key="article['articleId']">
-        <td>{{ categoryObject[article["categoryId"]] }}</td>
+      <tr
+        class="article__row"
+        v-for="article in articleList"
+        :key="article.articleId"
+      >
+        <td>{{ categoryObject[article.categoryId] }}</td>
         <td></td>
         <td>
           <router-link
             :to="{
               name: 'articleDetail',
-              params: { id: article['articleId'] },
+              params: { id: article.articleId },
             }"
           >
-            {{ article["title"] }}
+            {{ article.title }}
           </router-link>
           <router-view />
         </td>
-        <td>{{ article["writer"] }}</td>
-        <td>{{ article["view"] }}</td>
-        <td>{{ article["createdAt"] }}</td>
-        <td>{{ article["modifiedAt"] }}</td>
+        <td>{{ article.writer }}</td>
+        <td>{{ article.view }}</td>
+        <td>{{ article.createdAt }}</td>
+        <td>{{ article.modifiedAt }}</td>
       </tr>
     </table>
   </div>
@@ -73,10 +77,19 @@ export default {
       searchedCount: Number,
     };
   },
-  // 게시글 정보받아오기
+  //  게시글 정보받아오기
   async created() {
-    const boardInfo = await api.getBoardInfo();
-    console.log(boardInfo);
+    const axiosRes = await api.getBoardInfo();
+    // TO KNOW ) await 라인에서 data 프로퍼티 불러오면 undefined?
+    const boardInfo = axiosRes.data;
+    this.articleList = boardInfo.articleList;
+    this.searchedCount = boardInfo.searchedArticleCount;
+    this.categoryList = boardInfo.categoryList;
+    this.categoryObject = boardInfo.categoryList.reduce((newObj, obj) => {
+      newObj[obj.categoryId] = obj.categoryName;
+      return newObj;
+      // TO KNOW )  왜 뒤에 {} 표현 안넣어주면 뒤죽박죽?
+    }, {});
   },
   methods: {
     async init() {},
@@ -91,6 +104,12 @@ table {
 }
 
 th {
+  border-bottom: 2px solid black;
+  height: 30px;
+}
+
+.article__row {
+  height: 30px;
   border-bottom: 1px solid black;
 }
 </style>
