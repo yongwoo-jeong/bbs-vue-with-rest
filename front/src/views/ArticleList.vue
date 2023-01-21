@@ -62,7 +62,6 @@
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
 import { api } from "@/api/api";
-// @ is an alias to /src
 
 export default {
   name: "ArticleList",
@@ -79,9 +78,9 @@ export default {
   },
   //  게시글 정보받아오기
   async created() {
-    const axiosRes = await api.getBoardInfo();
+    const axiosResult = await api.getBoardInfo();
     // TO KNOW ) await 라인에서 data 프로퍼티 불러오면 undefined?
-    const boardInfo = axiosRes.data;
+    const boardInfo = axiosResult.data;
     this.articleList = boardInfo.articleList;
     this.searchedCount = boardInfo.searchedArticleCount;
     this.categoryList = boardInfo.categoryList;
@@ -90,9 +89,6 @@ export default {
       return newObj;
       // TO KNOW )  왜 뒤에 {} 표현 안넣어주면 뒤죽박죽?
     }, {});
-  },
-  methods: {
-    async init() {},
   },
 };
 </script>

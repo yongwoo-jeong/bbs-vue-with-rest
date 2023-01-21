@@ -5,4 +5,7 @@ export const api = {
   getBoardInfo() {
     return service.get(`${API_URL.articleList}`);
   },
+  getBoardDetail(articleId) {
+    return service.get(`${API_URL.articleDetail(articleId)}`);
+  },
 };

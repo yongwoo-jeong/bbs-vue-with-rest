@@ -5,6 +5,7 @@
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
+import { api } from "@/api/api";
 
 export default {
   name: "ArticleDetail",
@@ -12,26 +13,14 @@ export default {
     HeaderTitle,
   },
   data() {
-    return {
-      article: {
-        articleId: Number,
-        categoryId: Number,
-        writer: String,
-        password: String,
-        title: String,
-        content: String,
-        createdAt: String,
-        modifiedAt: String,
-      },
-    };
+    return {};
   },
   async created() {
     // path variable 획득
     const articleId = this.$route.params.id;
     // api 요청
-    const articleDetail = await this.axios.get(`/api/v1/articles/${articleId}`);
-    this.article = articleDetail;
-    console.log(this.article.articleId);
+    const axiosResult = await api.getBoardDetail(articleId);
+    console.log(axiosResult.data);
   },
 };
 </script>
