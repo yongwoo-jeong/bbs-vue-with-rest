@@ -40,14 +40,14 @@
         <td>{{ categoryObject[article.categoryId] }}</td>
         <td></td>
         <td>
-          <router-link
+          <RouterLink
             :to="{
               name: 'articleDetail',
               params: { id: article.articleId },
             }"
           >
             {{ article.title }}
-          </router-link>
+          </RouterLink>
         </td>
         <td>{{ article.writer }}</td>
         <td>{{ article.view }}</td>
@@ -80,7 +80,7 @@ export default {
   },
   //  게시글 정보받아오기
   async mounted() {
-    console.log(this.$route.query);
+    console.log(this.$route);
     const axiosResult = await api.getBoardInfo();
     // TO KNOW ) await 라인에서 data 프로퍼티 불러오면 undefined?
     const boardInfo = axiosResult.data;
@@ -92,6 +92,23 @@ export default {
       return newObj;
       // TO KNOW )  왜 뒤에 {} 표현 안넣어주면 뒤죽박죽?
     }, {});
+  },
+  watch: {
+    $route(to, from) {
+      if (to !== from) {
+        this.pageChanged();
+        console.log("this is changed");
+      }
+    },
+  },
+  methods: {
+    async pageChanged() {
+      const axiosResult = await api.getBoardInfo();
+      // TO KNOW ) await 라인에서 data 프로퍼티 불러오면 undefined?
+      const boardInfo = axiosResult.data;
+      this.articleList = boardInfo.articleList;
+      this.searchedCount = boardInfo.searchedArticleCount;
+    },
   },
 };
 </script>

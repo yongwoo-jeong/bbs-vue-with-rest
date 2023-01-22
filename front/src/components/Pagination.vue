@@ -1,6 +1,12 @@
 <template>
   <div>
-    <a v-for="pageNumber in totalPages" :key="pageNumber">{{ pageNumber }}</a>
+    <a v-for="pageNumber in totalPages" :key="pageNumber">
+      <RouterLink
+        :to="{ name: 'articleList', query: { currentPage: pageNumber } }"
+      >
+        {{ pageNumber }}
+      </RouterLink>
+    </a>
   </div>
 </template>
 
