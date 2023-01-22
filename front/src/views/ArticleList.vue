@@ -80,8 +80,11 @@ export default {
   },
   //  게시글 정보받아오기
   async mounted() {
-    console.log(this.$route);
-    const axiosResult = await api.getBoardInfo();
+    const searchQueryString = this.$route.fullPath.replace(
+      this.$route.path,
+      ""
+    );
+    const axiosResult = await api.getBoardInfo(searchQueryString);
     // TO KNOW ) await 라인에서 data 프로퍼티 불러오면 undefined?
     const boardInfo = axiosResult.data;
     this.articleList = boardInfo.articleList;
@@ -103,7 +106,11 @@ export default {
   },
   methods: {
     async pageChanged() {
-      const axiosResult = await api.getBoardInfo();
+      const searchQueryString = this.$route.fullPath.replace(
+        this.$route.path,
+        ""
+      );
+      const axiosResult = await api.getBoardInfo(searchQueryString);
       // TO KNOW ) await 라인에서 data 프로퍼티 불러오면 undefined?
       const boardInfo = axiosResult.data;
       this.articleList = boardInfo.articleList;
