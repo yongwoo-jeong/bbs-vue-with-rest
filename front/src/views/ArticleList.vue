@@ -1,10 +1,10 @@
 <template>
-  <HeaderTitle title="게시판 보기" />
   <div>
-    <form>
-      <input type="date" />
-      <input type="date" />
-      <select>
+    <HeaderTitle title="게시판 보기" />
+    <form method="get" action="/articles">
+      <input name="startDate" type="date" />
+      <input name="endDate" type="date" />
+      <select name="category">
         <option>전체 카테고리</option>
         <option
           v-for="category in categoryList"
@@ -33,7 +33,7 @@
         <th>수정일시</th>
       </tr>
       <tr
-        class="article__row"
+        class="article"
         v-for="article in articleList"
         :key="article.articleId"
       >
@@ -48,7 +48,6 @@
           >
             {{ article.title }}
           </router-link>
-          <router-view />
         </td>
         <td>{{ article.writer }}</td>
         <td>{{ article.view }}</td>
@@ -56,28 +55,32 @@
         <td>{{ article.modifiedAt }}</td>
       </tr>
     </table>
+    <Pagination :totalArticles="searchedCount" />
   </div>
 </template>
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
 import { api } from "@/api/api";
+import Pagination from "@/components/Pagination.vue";
 
 export default {
   name: "ArticleList",
   components: {
     HeaderTitle,
+    Pagination,
   },
   data() {
     return {
       articleList: [],
       categoryList: [],
       categoryObject: {},
-      searchedCount: Number,
+      searchedCount: 0,
     };
   },
   //  게시글 정보받아오기
-  async created() {
+  async mounted() {
+    console.log(this.$route.query);
     const axiosResult = await api.getBoardInfo();
     // TO KNOW ) await 라인에서 data 프로퍼티 불러오면 undefined?
     const boardInfo = axiosResult.data;
@@ -104,7 +107,7 @@ th {
   height: 30px;
 }
 
-.article__row {
+.article {
   height: 30px;
   border-bottom: 1px solid black;
 }

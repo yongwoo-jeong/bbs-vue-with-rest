@@ -1,8 +1,7 @@
 import axios from "axios";
-import { SERVER_URL } from "./config";
 
 const service = axios.create({
-  baseURL: SERVER_URL,
+  baseURL: process.env.VUE_APP_SERVER_URL,
   timeout: 1000,
   headers: {
     "Content-Type": "application/json;charset=utf-8",
