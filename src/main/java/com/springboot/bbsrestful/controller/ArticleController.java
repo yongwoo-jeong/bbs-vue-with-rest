@@ -41,7 +41,6 @@ public class ArticleController {
 	public BoardVO articleListController(@ModelAttribute SearchCriteriaVO searchCriteria){
 		// 카테고리명
 		List<CategoryVO> categories = articleService.selectCategories();
-		System.out.println(searchCriteria.getCurrentPage());
 		// DB SELECT LIMIT offset 설정
 		searchCriteria.setDbLimitOffset((searchCriteria.getCurrentPage()-1)*10);
 		// 게시글리스트, 게시글 숫자 담은 DTO

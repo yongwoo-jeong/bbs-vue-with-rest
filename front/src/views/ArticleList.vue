@@ -1,11 +1,17 @@
 <template>
   <div>
     <HeaderTitle title="게시판 보기" />
+    <!-- SearchCriteriaVO 
+        keyword
+        categoryId
+        startDate
+        endDate
+        currentPage -->
     <form method="get" action="/articles">
       <input name="startDate" type="date" />
       <input name="endDate" type="date" />
-      <select name="category">
-        <option>전체 카테고리</option>
+      <select name="categoryId">
+        <option value="">전체 카테고리</option>
         <option
           v-for="category in categoryList"
           :key="category.categoryId"
@@ -14,7 +20,12 @@
           {{ category.categoryName }}
         </option>
       </select>
-      <input type="text" />
+      <input name="keyword" type="text" />
+      <input
+        name="currentPage"
+        type="hidden"
+        :value="this.$route.query.currentPage"
+      />
       <input type="submit" value="검색" />
     </form>
     <div>
@@ -61,8 +72,8 @@
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
-import { api } from "@/api/api";
 import Pagination from "@/components/Pagination.vue";
+import { api } from "@/api/api";
 
 export default {
   name: "ArticleList",
@@ -70,6 +81,10 @@ export default {
     HeaderTitle,
     Pagination,
   },
+
+  /**
+   * 게시글리스트, 검색된게시글 수, 카테고리리스트, 카테고리객체
+   */
   data() {
     return {
       articleList: [],
@@ -78,34 +93,12 @@ export default {
       searchedCount: 0,
     };
   },
-  //  게시글 정보받아오기
-  async mounted() {
-    const searchQueryString = this.$route.fullPath.replace(
-      this.$route.path,
-      ""
-    );
-    const axiosResult = await api.getBoardInfo(searchQueryString);
-    // TO KNOW ) await 라인에서 data 프로퍼티 불러오면 undefined?
-    const boardInfo = axiosResult.data;
-    this.articleList = boardInfo.articleList;
-    this.searchedCount = boardInfo.searchedArticleCount;
-    this.categoryList = boardInfo.categoryList;
-    this.categoryObject = boardInfo.categoryList.reduce((newObj, obj) => {
-      newObj[obj.categoryId] = obj.categoryName;
-      return newObj;
-      // TO KNOW )  왜 뒤에 {} 표현 안넣어주면 뒤죽박죽?
-    }, {});
-  },
-  watch: {
-    $route(to, from) {
-      if (to !== from) {
-        this.pageChanged();
-        console.log("this is changed");
-      }
-    },
-  },
+
   methods: {
-    async pageChanged() {
+    /**
+     * API 통해서 articleList, category List, searchedArticleCount 받아오는 메서드
+     */
+    async fetchArticleList() {
       const searchQueryString = this.$route.fullPath.replace(
         this.$route.path,
         ""
@@ -115,6 +108,28 @@ export default {
       const boardInfo = axiosResult.data;
       this.articleList = boardInfo.articleList;
       this.searchedCount = boardInfo.searchedArticleCount;
+      return boardInfo;
+    },
+  },
+
+  async mounted() {
+    const boardInfo = await this.fetchArticleList();
+    this.categoryList = boardInfo.categoryList;
+    // 객체 리스트 형태 카테고리 리스트를 객체로 만들어주기 위한 리듀스
+    this.categoryObject = boardInfo.categoryList.reduce((newObj, obj) => {
+      newObj[obj.categoryId] = obj.categoryName;
+      return newObj;
+    }, {});
+  },
+
+  watch: {
+    /**
+     * 페이징, 검색을 위해 라우트 쿼리가 바뀌면 리렌더하기 위한 와쳐메서드
+     */
+    $route(to, from) {
+      if (to !== from) {
+        this.fetchArticleList();
+      }
     },
   },
 };
@@ -129,6 +144,10 @@ table {
 th {
   border-bottom: 2px solid black;
   height: 30px;
+}
+
+td * {
+  color: black;
 }
 
 .article {
