@@ -1,7 +1,7 @@
 <template>
   <main>
     <HeaderTitle title="게시판 - 등록" />
-    <form>
+    <form enctype="multipart/form-data" @submit.prevent="submit">
       <table style="border-collapse: collapse">
         <tr>
           <th>카테고리*</th>
@@ -20,14 +20,22 @@
         </tr>
         <tr>
           <th>작성자*</th>
-          <td><input name="writer" type="text" /></td>
+          <td>
+            <input :value="writer" @input="changeWriter" />
+          </td>
         </tr>
         <tr>
           <th>비밀번호*</th>
           <td>
-            <input name="password" type="password" placeholder="비밀번호" />
             <input
-              name="passwordConfirm"
+              :value="password"
+              @input="changePassword"
+              type="password"
+              placeholder="비밀번호"
+            />
+            <input
+              :value="passwordConfirm"
+              @input="changePasswordConfirm"
               type="password"
               placeholder="비밀번호 확인"
             />
@@ -35,12 +43,12 @@
         </tr>
         <tr>
           <th>제목*</th>
-          <td><input name="title" type="text" /></td>
+          <td><input :value="title" @input="changeTitle" /></td>
         </tr>
         <tr>
           <th>내용*</th>
           <td class="table-data__content">
-            <input name="content" type="text" />
+            <input :value="content" @input="changeContent" />
           </td>
         </tr>
         <tr>
@@ -62,11 +70,42 @@
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
+import { api } from "@/api/api";
 
 export default {
   name: "articleCreate",
   components: { HeaderTitle },
-  created() {},
+  data() {
+    return {
+      postUrl: `${process.env.VUE_APP_SERVER_URL}api/v1/articles/create`,
+      writer: "",
+      title: "",
+      password: "",
+      passwordConfirm: "",
+      content: "",
+    };
+  },
+  methods: {
+    submit: async function (event, newArticle) {
+      event.preventDefault();
+      await api.postNewArticle(newArticle);
+    },
+    changeWriter(e) {
+      this.writer = e.target.value;
+    },
+    changeTitle(e) {
+      this.title = e.target.value;
+    },
+    changePassword(e) {
+      this.password = e.target.value;
+    },
+    changePasswordConfirm(e) {
+      this.passwordConfirm = e.target.value;
+    },
+    changeContent(e) {
+      this.Content = e.target.value;
+    },
+  },
 };
 </script>
 

@@ -1,18 +1,23 @@
 package com.springboot.bbsrestful.controller;
 
 import com.springboot.bbsrestful.service.ArticleService;
+import com.springboot.bbsrestful.utils.CustomException;
 import com.springboot.bbsrestful.vo.ArticleVO;
 import com.springboot.bbsrestful.vo.BoardVO;
 import com.springboot.bbsrestful.vo.CategoryVO;
 import com.springboot.bbsrestful.vo.SearchCriteriaVO;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 게시글 관련 요청 컨트롤러
@@ -60,6 +65,20 @@ public class ArticleController {
 	public ArticleVO articleDetailController(@PathVariable("id") Integer id){
 		ArticleVO articleDetail = articleService.selectArticle(id);
 		return articleDetail;
+	}
+
+	/**
+	 * 폼을 통해 받은 새 게시글 정보 POST 요청 처리
+	 * TODO 에러코드 받아서 enum 으로 처리
+	 * @return
+	 */
+	@PostMapping("/api/v1/articles/create")
+	public void insertArticleController(@ModelAttribute ArticleVO newArticle,
+										@RequestParam("passwordConfirm") String passwordConfirm,
+										@ModelAttribute SearchCriteriaVO searchCriteria)
+										throws CustomException {
+		articleService.insertNewArticle(newArticle, passwordConfirm);
+//		String searchQueryString = req.getQueryString();
 	}
 
 }

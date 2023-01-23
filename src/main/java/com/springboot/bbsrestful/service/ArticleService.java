@@ -1,10 +1,14 @@
 package com.springboot.bbsrestful.service;
 
 import com.springboot.bbsrestful.repository.ArticleRepository;
+import com.springboot.bbsrestful.utils.CustomException;
+import com.springboot.bbsrestful.utils.ValidationUtils;
+import com.springboot.bbsrestful.utils.ValidationUtils.ArticleValidationResult;
 import com.springboot.bbsrestful.vo.ArticleVO;
 import com.springboot.bbsrestful.vo.CategoryVO;
 import com.springboot.bbsrestful.vo.SearchCriteriaVO;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +59,26 @@ public class ArticleService {
 	public ArticleVO selectArticle(Integer articleId){
 		return articleRepository.selectArticle(articleId);
 	}
+
+	/**
+	 * 새 게시글 등록 서비스
+	 * @param newArticle 새 게시글 정보가 담긴 객체
+	 */
+	public int insertNewArticle(ArticleVO newArticle, String passwordConfirm)
+			throws CustomException {
+		ArticleValidationResult validationResult = ValidationUtils.validateArticleForm(newArticle, passwordConfirm);
+		if (validationResult.getStatus()!=201){
+			throw new CustomException(validationResult.getStatus(),validationResult.getMessage());
+		}
+		// articleInput.jsp select value 로 받은 "1-JAVA" 형태 스트링을
+		// 스플릿해서 categoryId, categoryName 으로 사용
+		ArticleVO articleInserting = ArticleVO.builder().title(newArticle.getTitle()).writer(newArticle.getWriter())
+				.password(newArticle.getPassword()).content(newArticle.getContent())
+				.categoryId(newArticle.getCategoryId()).build();
+		articleRepository.insertArticle(articleInserting);
+		return articleInserting.getArticleId();
+	}
+
 
 }
 

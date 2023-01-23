@@ -6,7 +6,7 @@ import service from "./service";
 const API_URL = {
   articleList: (args) => `api/v1/articles${args}`,
   articleDetail: (args) => `/api/v1/articles/${args}`,
-  insertArticle: ``,
+  insertArticle: "/api/v1/articles/create",
 };
 
 /**
@@ -18,5 +18,8 @@ export const api = {
   },
   getBoardDetail(articleId) {
     return service.get(`${API_URL.articleDetail(articleId)}`);
+  },
+  postNewArticle(newArticle) {
+    return service.post(newArticle, API_URL.insertArticle);
   },
 };

@@ -61,4 +61,13 @@ public class ArticleRepository {
 		return session.selectOne(mapperName+".selectArticleDetail", articleId);
 	}
 
+	/**
+	 * 새 게시글을 DB INSERT
+	 * @param newArticle ArticleVO
+	 * @return
+	 */
+	public void insertArticle(ArticleVO newArticle) {
+		session.insert(mapperName + ".insertArticle", newArticle);
+	}
+
 }

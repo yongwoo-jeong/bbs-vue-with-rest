@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * 파일 관련 유틸
  */
-public class MyFileUtils {
+public class FileUtils {
 
 	/**
 	 * 빈 파일인지 확인

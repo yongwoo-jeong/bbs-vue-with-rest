@@ -30,9 +30,9 @@ export default {
    * @param  {...any} options
    * @returns
    */
-  async post(...options) {
+  async post(newArticle, ...options) {
     try {
-      const res = await service.post(...options);
+      const res = await service.post(...options, newArticle);
       return res;
     } catch (e) {
       return e;
