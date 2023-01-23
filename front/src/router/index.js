@@ -31,6 +31,7 @@ const routes = [
     path: "/articles/create",
     component: () => import("@/views/ArticleCreate"),
     name: "articleCreate",
+    props: true,
   },
 ];
 

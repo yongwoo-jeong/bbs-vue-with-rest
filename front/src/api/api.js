@@ -1,11 +1,17 @@
 import service from "./service";
 
+/**
+ * API SERVER PATH
+ */
 const API_URL = {
   articleList: (args) => `api/v1/articles${args}`,
   articleDetail: (args) => `/api/v1/articles/${args}`,
   insertArticle: ``,
 };
 
+/**
+ * API 호출 메서드
+ */
 export const api = {
   getBoardInfo(queryParam) {
     return service.get(`${API_URL.articleList(queryParam)}`);

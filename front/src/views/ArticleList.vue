@@ -13,7 +13,7 @@
       <select name="categoryId">
         <option value="">전체 카테고리</option>
         <option
-          v-for="category in categoryList"
+          v-for="category in this.$store.state.categoryList"
           :key="category.categoryId"
           :value="category.categoryId"
         >
@@ -48,7 +48,7 @@
         v-for="article in articleList"
         :key="article.articleId"
       >
-        <td>{{ categoryObject[article.categoryId] }}</td>
+        <td>{{ this.$store.state.categoryObject[article.categoryId] }}</td>
         <td></td>
         <td>
           <RouterLink
@@ -86,13 +86,11 @@ export default {
   },
 
   /**
-   * 게시글리스트, 검색된게시글 수, 카테고리리스트, 카테고리객체
+   * 게시글리스트, 검색된게시글 수
    */
   data() {
     return {
       articleList: [],
-      categoryList: [],
-      categoryObject: {},
       searchedCount: 0,
     };
   },
@@ -107,22 +105,17 @@ export default {
         ""
       );
       const axiosResult = await api.getBoardInfo(searchQueryString);
-      // TO KNOW ) await 라인에서 data 프로퍼티 불러오면 undefined?
       const boardInfo = axiosResult.data;
       this.articleList = boardInfo.articleList;
       this.searchedCount = boardInfo.searchedArticleCount;
+      // 카테고리는 state로 관리
+      this.$store.commit("updateCategoryList", boardInfo.categoryList);
       return boardInfo;
     },
   },
 
   async mounted() {
-    const boardInfo = await this.fetchArticleList();
-    this.categoryList = boardInfo.categoryList;
-    // 객체 리스트 형태 카테고리 리스트를 객체로 만들어주기 위한 리듀스
-    this.categoryObject = boardInfo.categoryList.reduce((newObj, obj) => {
-      newObj[obj.categoryId] = obj.categoryName;
-      return newObj;
-    }, {});
+    await this.fetchArticleList();
   },
 
   watch: {
@@ -162,7 +155,7 @@ td * {
   border: 1px solid black;
   height: 25px;
   position: absolute;
-  right: 15px;
+  right: 5px;
   background-color: rgba(0, 0, 0, 0.75);
 }
 
