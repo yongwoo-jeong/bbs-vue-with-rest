@@ -27,6 +27,11 @@ const routes = [
     name: "articleDetail",
     props: true,
   },
+  {
+    path: "/articles/create",
+    component: () => import("@/views/ArticleCreate"),
+    name: "articleCreate",
+  },
 ];
 
 const router = createRouter({

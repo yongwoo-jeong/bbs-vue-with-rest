@@ -67,6 +67,9 @@
       </tr>
     </table>
     <Pagination :totalArticles="searchedCount" />
+    <a class="create__button">
+      <RouterLink :to="{ name: 'articleCreate' }"> 등록 </RouterLink>
+    </a>
   </div>
 </template>
 
@@ -153,5 +156,19 @@ td * {
 .article {
   height: 30px;
   border-bottom: 1px solid black;
+}
+
+.create__button {
+  border: 1px solid black;
+  height: 25px;
+  position: absolute;
+  right: 15px;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.create__button * {
+  padding: 0px 55px;
+  color: white;
+  text-decoration: none;
 }
 </style>
