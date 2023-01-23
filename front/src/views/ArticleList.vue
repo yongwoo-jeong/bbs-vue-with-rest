@@ -108,8 +108,6 @@ export default {
       const boardInfo = axiosResult.data;
       this.articleList = boardInfo.articleList;
       this.searchedCount = boardInfo.searchedArticleCount;
-      // 카테고리는 state로 관리
-      this.$store.commit("updateCategoryList", boardInfo.categoryList);
       return boardInfo;
     },
   },

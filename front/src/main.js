@@ -6,4 +6,4 @@ import { store } from "./store";
 
 const app = createApp(App);
 app.config.globalProperties.axios = axios;
-app.use(router).use(store).mount("#app");
+app.use(store).use(router).mount("#app");

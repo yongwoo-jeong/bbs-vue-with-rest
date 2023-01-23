@@ -2,14 +2,14 @@
   <main>
     <HeaderTitle title="게시판 - 등록" />
     <form>
-      <table>
+      <table style="border-collapse: collapse">
         <tr>
           <th>카테고리*</th>
           <td>
             <label for="category"></label>
             <select name="categoryId" id="category">
               <option
-                v-for="category in categoryList"
+                v-for="category in this.$store.state.categoryList"
                 :key="category.categoryId"
                 :value="category.categoryId"
               >
@@ -49,11 +49,31 @@ import HeaderTitle from "@/components/HeaderTitle.vue";
 export default {
   name: "articleCreate",
   components: { HeaderTitle },
-  prop: ["categoryList"],
-  mounted() {
-    console.log(this.categoryList);
-  },
+  created() {},
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+table {
+  width: 1200px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+th {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid black;
+  width: 100px;
+  height: 30px;
+}
+
+td {
+  width: 500px;
+  border-bottom: 1px solid black;
+}
+
+td * {
+  width: 300px;
+  align-self: baseline;
+}
+</style>
