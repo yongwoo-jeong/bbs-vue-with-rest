@@ -70,7 +70,7 @@ public class ArticleController {
 	 * TODO ENUM 통한 에러코드 고민
 	 * @return
 	 */
-	@PostMapping("/api/v1/articles/create")
+	@PostMapping("/api/v1/articles")
 	public void insertArticleController(@Valid @ModelAttribute ArticleVO newArticle,
 										@RequestParam("passwordConfirm") String passwordConfirm,
 										@ModelAttribute SearchCriteriaVO searchCriteria) {

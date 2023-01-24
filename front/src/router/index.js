@@ -29,9 +29,9 @@ const routes = [
     props: true,
   },
   {
-    path: "/articles/create",
+    path: "/articles/new",
     component: () => import("@/views/ArticleCreate"),
-    name: "articleCreate",
+    name: "newArticleForm",
     props: true,
   },
 ];

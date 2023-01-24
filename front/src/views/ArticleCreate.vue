@@ -74,7 +74,7 @@ import { api } from "@/api/api";
 import router from "@/router";
 
 export default {
-  name: "articleCreate",
+  name: "newArticleForm",
   components: { HeaderTitle },
   data() {
     return {
