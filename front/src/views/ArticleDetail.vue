@@ -35,18 +35,29 @@ export default {
   components: {
     HeaderTitle,
   },
+
   data() {
     return {
+      /**
+       * 게시글 상세정보
+       */
       articleDetail: {},
     };
   },
+
+  /**
+   * 게시글 ID를 path에서 가져와 데이터 페칭 후 등록
+   */
   async created() {
     // path variable 획득
     const articleId = this.$route.params.id;
-    // api 요청
     const axiosResult = await api.getBoardDetail(articleId);
     this.articleDetail = axiosResult.data;
   },
+
+  /**
+   * state로 부터 적절한 카테고리명 리턴
+   */
   computed: {
     categoryName: function () {
       return this.$store.state.categoryObject[this.articleDetail.categoryId];

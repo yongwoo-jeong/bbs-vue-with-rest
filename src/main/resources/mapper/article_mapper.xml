@@ -85,12 +85,12 @@
     </selectKey>
   </insert>
 
-<!--  &lt;!&ndash; 조회수 증가를 위한 쿼리  &ndash;&gt;-->
-<!--  <update id="updateViewCount">-->
-<!--    UPDATE article-->
-<!--    SET view = view+1-->
-<!--    WHERE  article_id = #{articleId}-->
-<!--  </update>-->
+  <!-- 조회수 증가를 위한 쿼리  -->
+  <update id="updateViewCount">
+    UPDATE article
+    SET view = view+1
+    WHERE  article_id = #{articleId}
+  </update>
 
 <!--  &lt;!&ndash;  삭제 &ndash;&gt;-->
 <!--  <delete id="deleteArticle">-->

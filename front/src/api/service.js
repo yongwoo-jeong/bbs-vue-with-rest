@@ -23,9 +23,15 @@ export default {
     }
   },
 
+  /**
+   * 새 게시글 등록 POST 요청을 보내는 메서드
+   * @param {FormData} 새 게시글 정보가 담긴 폼데이터
+   * @param {string} POST 요청 할 API URL
+   * @returns
+   */
   async post(newArticle, url) {
     try {
-      const res = await axiosInstance.post(url, newArticle, {});
+      const res = await axiosInstance.post(url, newArticle);
       return res;
     } catch (e) {
       console.log(e);

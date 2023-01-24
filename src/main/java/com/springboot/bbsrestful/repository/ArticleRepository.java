@@ -70,4 +70,12 @@ public class ArticleRepository {
 		session.insert(mapperName + ".insertArticle", newArticle);
 	}
 
+	/**
+	 * 게시글 조회수 +1
+	 * @param articleId 대상 게시글 ID
+	 */
+	public void updateViewCount(Integer articleId){
+		session.update(mapperName +".updateViewCount", articleId);
+	};
+
 }

@@ -1,9 +1,12 @@
 package com.springboot.bbsrestful.vo;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 
 /**
@@ -24,12 +27,14 @@ public class ArticleVO {
 	 * 게시글 제목
 	 * VARCHAR(100) NOT NULL
 	 */
+	@Size(min=4,max=99)
 	@NonNull
 	private String title;
 	/**
 	 *  게시글 작성자
 	 *  VARCHAR(4) NOT NULL
 	 */
+	@Size(min=3,max=4)
 	@NonNull
 	private String writer;
 
@@ -37,6 +42,7 @@ public class ArticleVO {
 	 * 게시글 비밀번호
 	 * VARCHAR(5) NOT NULL
 	 */
+	@Size(min=4,max=16)
 	@NonNull
 	private String password;
 
@@ -50,6 +56,7 @@ public class ArticleVO {
 	 * 게시글 본문
 	 * TEXT NOT NULL
 	 */
+	@Size(min=4,max=1999)
 	@NonNull
 	private String content;
 

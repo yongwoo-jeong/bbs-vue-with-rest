@@ -95,31 +95,26 @@ export default {
       formData.append("passwordConfirm", this.passwordConfirm);
       formData.append("content", this.content);
       formData.append("categoryId", this.categoryId);
-      await api.postNewArticle(formData);
+      const res = await api.postNewArticle(formData);
+      console.log(res);
     },
     selectCategory(e) {
       this.categoryId = e.target.value;
-      console.log(this.categoryId);
     },
     changeWriter(e) {
       this.writer = e.target.value;
-      console.log(this.writer);
     },
     changeTitle(e) {
       this.title = e.target.value;
-      console.log(this.title);
     },
     changePassword(e) {
       this.password = e.target.value;
-      console.log(this.password);
     },
     changePasswordConfirm(e) {
       this.passwordConfirm = e.target.value;
-      console.log(this.passwordConfirm);
     },
     changeContent(e) {
       this.content = e.target.value;
-      console.log(this.content);
     },
   },
 };
