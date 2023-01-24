@@ -1,14 +1,10 @@
 package com.springboot.bbsrestful.service;
 
 import com.springboot.bbsrestful.repository.ArticleRepository;
-import com.springboot.bbsrestful.exception.FormValidException;
-import com.springboot.bbsrestful.utils.StringUtils;
 import com.springboot.bbsrestful.vo.ArticleVO;
 import com.springboot.bbsrestful.vo.CategoryVO;
 import com.springboot.bbsrestful.vo.SearchCriteriaVO;
 import java.util.List;
-import java.util.Objects;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +62,7 @@ public class ArticleService {
 	 * TODO enum 예외처리
 	 * @param newArticle 새 게시글 정보가 담긴 객체
 	 */
-	public int insertNewArticle(ArticleVO newArticle, String passwordConfirm) throws FormValidException {
+	public int insertNewArticle(ArticleVO newArticle, String passwordConfirm) {
 //		ArticleValidationResult validationResult = validateArticleForm(newArticle, passwordConfirm);
 //		if (validationResult.getStatus()!=201){
 //			throw new FormValidException(validationResult.getStatus(), validationResult.getMessage());

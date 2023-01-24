@@ -6,7 +6,7 @@ import service from "./service";
 const API_URL = {
   articleList: (args) => `api/v1/articles${args}`,
   articleDetail: (args) => `/api/v1/articles/${args}`,
-  insertArticle: "/api/v1/articles/create",
+  insertArticle: "/api/v1/articles",
 };
 
 /**

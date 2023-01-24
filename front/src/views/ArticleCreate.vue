@@ -57,7 +57,7 @@
         </tr>
       </table>
       <div class="footer__button-containers">
-        <div class="footer__button__cancel">
+        <div @click="onCancel" class="footer__button__cancel">
           <a>취소</a>
         </div>
         <div class="footer__button__submit">
@@ -71,6 +71,7 @@
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
 import { api } from "@/api/api";
+import router from "@/router";
 
 export default {
   name: "articleCreate",
@@ -86,8 +87,45 @@ export default {
     };
   },
   methods: {
+    /**
+     * 필드 길이를 클라이언트에서 검증을 위한 메서드
+     */
+    validateForm: function () {
+      if (this.writer.length != 3 && this.writer.length != 4) {
+        alert("작성자 길이는 3~4 자입니다.");
+        return -1;
+      }
+      if (this.password.length < 4 || this.password.length > 15) {
+        alert("비밀번호 길이는 4~15 자입니다.");
+        return -1;
+      }
+      if (
+        this.passwordConfirm.length < 4 ||
+        this.passwordConfirm.length > 15 ||
+        this.password !== this.passwordConfirm
+      ) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return -1;
+      }
+      if (this.title.length < 4 || this.title.length > 99) {
+        alert("제목은 4~100 자입니다.");
+        return -1;
+      }
+      if (this.content.length < 4 || this.content.length > 1999) {
+        alert("본문내용 길이는 4~1999 자입니다.");
+        return -1;
+      }
+      return 1;
+    },
+    onCancel: () => {
+      router.push("/articles");
+    },
     onSumbit: async function (event) {
       event.preventDefault();
+      let isValidForm = this.validateForm();
+      if (isValidForm === -1) {
+        return;
+      }
       const formData = new FormData();
       formData.append("title", this.title);
       formData.append("writer", this.writer);
@@ -95,8 +133,8 @@ export default {
       formData.append("passwordConfirm", this.passwordConfirm);
       formData.append("content", this.content);
       formData.append("categoryId", this.categoryId);
-      const res = await api.postNewArticle(formData);
-      console.log(res);
+      await api.postNewArticle(formData);
+      router.push("/articles");
     },
     selectCategory(e) {
       this.categoryId = e.target.value;
@@ -174,6 +212,7 @@ td * {
 
 .footer__button__cancel {
   background-color: rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 
 .footer__button__submit {
@@ -182,5 +221,6 @@ td * {
 
 .footer__button__submit * {
   color: white;
+  cursor: pointer;
 }
 </style>

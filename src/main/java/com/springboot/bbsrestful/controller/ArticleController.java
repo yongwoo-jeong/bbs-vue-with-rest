@@ -1,12 +1,12 @@
 package com.springboot.bbsrestful.controller;
 
 import com.springboot.bbsrestful.service.ArticleService;
-import com.springboot.bbsrestful.exception.FormValidException;
 import com.springboot.bbsrestful.vo.ArticleVO;
 import com.springboot.bbsrestful.vo.BoardVO;
 import com.springboot.bbsrestful.vo.CategoryVO;
 import com.springboot.bbsrestful.vo.SearchCriteriaVO;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -71,7 +71,7 @@ public class ArticleController {
 	 * @return
 	 */
 	@PostMapping("/api/v1/articles/create")
-	public void insertArticleController(@ModelAttribute ArticleVO newArticle,
+	public void insertArticleController(@Valid @ModelAttribute ArticleVO newArticle,
 										@RequestParam("passwordConfirm") String passwordConfirm,
 										@ModelAttribute SearchCriteriaVO searchCriteria) {
 		articleService.insertNewArticle(newArticle, passwordConfirm);
