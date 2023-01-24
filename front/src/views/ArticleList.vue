@@ -24,7 +24,11 @@
       <input
         name="currentPage"
         type="hidden"
-        :value="this.$route.query.currentPage"
+        :value="
+          typeof this.$route.query.currentPage === Number
+            ? this.$route.query.currentPage
+            : 1
+        "
       />
       <input type="submit" value="검색" />
     </form>
@@ -68,7 +72,14 @@
     </table>
     <Pagination :totalArticles="searchedCount" />
     <a class="create__button">
-      <RouterLink :to="{ name: 'articleCreate' }"> 등록 </RouterLink>
+      <RouterLink
+        :to="{
+          name: 'newArticleForm',
+          query: { startDate, endDate, categoryId, keyword, currentPage },
+        }"
+      >
+        등록
+      </RouterLink>
     </a>
   </div>
 </template>
@@ -92,6 +103,12 @@ export default {
     return {
       articleList: [],
       searchedCount: 0,
+      // 검색조건 쿼리 파라미터
+      startDate: "",
+      endDate: "",
+      categoryId: "",
+      keyword: "",
+      currentPage: "",
     };
   },
 
@@ -108,7 +125,19 @@ export default {
       const boardInfo = axiosResult.data;
       this.articleList = boardInfo.articleList;
       this.searchedCount = boardInfo.searchedArticleCount;
+      this.setQueryString();
       return boardInfo;
+    },
+
+    /**
+     * 검색조건 유지를 위한 쿼리스트링 설정해주는 메서드
+     */
+    setQueryString() {
+      this.startDate = this.$route.query.startDate ?? "";
+      this.endDate = this.$route.query.endDate ?? "";
+      this.categoryId = this.$route.query.categoryId ?? "";
+      this.keyword = this.$route.query.keyword ?? "";
+      this.currentPage = this.$route.query.currentPage ?? "";
     },
   },
 
