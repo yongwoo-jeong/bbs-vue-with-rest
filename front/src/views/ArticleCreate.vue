@@ -1,13 +1,13 @@
 <template>
   <main>
     <HeaderTitle title="게시판 - 등록" />
-    <form enctype="multipart/form-data" @submit.prevent="submit">
+    <form enctype="multipart/form-data" @submit.prevent="onSumbit">
       <table style="border-collapse: collapse">
         <tr>
           <th>카테고리*</th>
           <td>
             <label for="category"></label>
-            <select name="categoryId" id="category">
+            <select name="categoryId" id="category" @change="selectCategory">
               <option
                 v-for="category in this.$store.state.categoryList"
                 :key="category.categoryId"
@@ -77,33 +77,49 @@ export default {
   components: { HeaderTitle },
   data() {
     return {
-      postUrl: `${process.env.VUE_APP_SERVER_URL}api/v1/articles/create`,
       writer: "",
       title: "",
       password: "",
       passwordConfirm: "",
       content: "",
+      categoryId: 1,
     };
   },
   methods: {
-    submit: async function (event, newArticle) {
+    onSumbit: async function (event) {
       event.preventDefault();
-      await api.postNewArticle(newArticle);
+      const formData = new FormData();
+      formData.append("title", this.title);
+      formData.append("writer", this.writer);
+      formData.append("password", this.password);
+      formData.append("passwordConfirm", this.passwordConfirm);
+      formData.append("content", this.content);
+      formData.append("categoryId", this.categoryId);
+      await api.postNewArticle(formData);
+    },
+    selectCategory(e) {
+      this.categoryId = e.target.value;
+      console.log(this.categoryId);
     },
     changeWriter(e) {
       this.writer = e.target.value;
+      console.log(this.writer);
     },
     changeTitle(e) {
       this.title = e.target.value;
+      console.log(this.title);
     },
     changePassword(e) {
       this.password = e.target.value;
+      console.log(this.password);
     },
     changePasswordConfirm(e) {
       this.passwordConfirm = e.target.value;
+      console.log(this.passwordConfirm);
     },
     changeContent(e) {
-      this.Content = e.target.value;
+      this.content = e.target.value;
+      console.log(this.content);
     },
   },
 };

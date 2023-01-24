@@ -3,12 +3,9 @@ import axios from "axios";
 /**
  * .env 에 존재하는 API 서버 패스를 base로 하는 axios 객체
  */
-const service = axios.create({
+const axiosInstance = axios.create({
   baseURL: process.env.VUE_APP_SERVER_URL,
   timeout: 1000,
-  headers: {
-    "Content-Type": "application/json;charset=utf-8",
-  },
 });
 
 export default {
@@ -17,24 +14,21 @@ export default {
    * @param  {String} GET 요청을 보낼 주소
    * @returns
    */
-  async get(...options) {
+  async get(url) {
     try {
-      const res = await service.get(...options);
+      const res = await axiosInstance.get(url);
       return res;
     } catch (e) {
       return e;
     }
   },
-  /**
-   *
-   * @param  {...any} options
-   * @returns
-   */
-  async post(newArticle, ...options) {
+
+  async post(newArticle, url) {
     try {
-      const res = await service.post(...options, newArticle);
+      const res = await axiosInstance.post(url, newArticle, {});
       return res;
     } catch (e) {
+      console.log(e);
       return e;
     }
   },

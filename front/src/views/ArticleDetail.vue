@@ -38,7 +38,6 @@ export default {
   data() {
     return {
       articleDetail: {},
-      categoryName: String,
     };
   },
   async created() {
@@ -47,9 +46,11 @@ export default {
     // api 요청
     const axiosResult = await api.getBoardDetail(articleId);
     this.articleDetail = axiosResult.data;
-    // 카테고리 리스트 env에서 관리, 인덱싱으로 이름 잡아주기
-    const categoryList = process.env.VUE_APP_CATEGORY_LIST.split(",");
-    this.categoryName = categoryList[this.articleDetail.categoryId - 1];
+  },
+  computed: {
+    categoryName: function () {
+      return this.$store.state.categoryObject[this.articleDetail.categoryId];
+    },
   },
 };
 </script>

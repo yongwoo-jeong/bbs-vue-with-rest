@@ -8,6 +8,4 @@ import lombok.RequiredArgsConstructor;
 public class CustomException extends Exception {
 	private final int ERROR_CODE;
 	private final String ERROR_MESSAGE;
-
-
 }
