@@ -86,7 +86,7 @@
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
-import { api } from "@/api/api";
+import { api, articleAPI } from "@/api/api";
 import router from "@/router";
 
 export default {
@@ -167,7 +167,7 @@ export default {
       const fileTwo = document.getElementById("file2");
       const fileThree = document.getElementById("file3");
 
-      await api.postNewArticle(formData);
+      await articleAPI.postNewArticle(formData);
       router.push("/articles");
     },
 

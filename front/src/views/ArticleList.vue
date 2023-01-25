@@ -1,12 +1,6 @@
 <template>
   <div>
     <HeaderTitle title="게시판 보기" />
-    <!-- SearchCriteriaVO 
-        keyword
-        categoryId
-        startDate
-        endDate
-        currentPage -->
     <form method="get" action="/articles">
       <input name="startDate" type="date" />
       <input name="endDate" type="date" />
@@ -94,7 +88,7 @@
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
 import Pagination from "@/components/Pagination.vue";
-import { api } from "@/api/api";
+import { articleAPI } from "@/api/api";
 
 export default {
   name: "ArticleList",
@@ -146,7 +140,7 @@ export default {
         this.$route.path,
         ""
       );
-      const axiosResult = await api.getBoardInfo(searchQueryString);
+      const axiosResult = await articleAPI.getBoardInfo(searchQueryString);
       const boardInfo = axiosResult.data;
       this.articleList = boardInfo.articleList;
       this.searchedCount = boardInfo.searchedArticleCount;

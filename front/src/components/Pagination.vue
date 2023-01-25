@@ -33,15 +33,16 @@ export default {
     "endDate",
     "categoryId",
     "keyword",
+    // 현재 페이지 표시를 위한 prop
     "currentPage",
   ],
   computed: {
+    /**
+     * 검색된 게시글 통해 총 페이지 개수 계산
+     */
     totalPages: function () {
       return Math.ceil(this.totalArticles / 10);
     },
-  },
-  watch: {
-    currentPage() {},
   },
 };
 </script>

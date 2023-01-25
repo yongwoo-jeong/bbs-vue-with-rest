@@ -4,23 +4,33 @@
     <main>
       <div class="writer">
         <span>{{ articleDetail.writer }}</span>
-        <div>
+        <div class="dateInfo">
           <span>등록일시 {{ articleDetail.createdAt }}</span>
-          <span>수정일시 {{ articleDetail.modifiedAt }}</span>
+          <span>수정일시 {{ articleDetail.modifiedAt ?? "-" }}</span>
         </div>
       </div>
       <div class="title">
         <div>
-          <span>[{{ categoryName }}]</span>
+          <span class="title__category">[{{ categoryName }}]</span>
           <span>{{ articleDetail.title }}</span>
         </div>
         <span>조회수: {{ articleDetail.view }}</span>
       </div>
-      <div>
+      <div class="content">
         <a>{{ articleDetail.content }}</a>
       </div>
       <div class="files"></div>
-      <div class="comments"></div>
+      <div class="comments">
+        <div></div>
+        <div>
+          <input
+            class="comments__input"
+            type="text"
+            placeholder="댓글을 입력해주세요"
+          />
+          <input type="submit" value="등록" />
+        </div>
+      </div>
       <div class="buttons"></div>
     </main>
   </body>
@@ -28,7 +38,7 @@
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
-import { api } from "@/api/api";
+import { articleAPI, commentAPI } from "@/api/api";
 
 export default {
   name: "ArticleDetail",
@@ -51,8 +61,10 @@ export default {
   async created() {
     // path variable 획득
     const articleId = this.$route.params.id;
-    const axiosResult = await api.getArticleDetail(articleId);
-    this.articleDetail = axiosResult.data;
+    const articleDetailResult = await articleAPI.getArticleDetail(articleId);
+    const commentListResult = await commentAPI.getComments(articleId);
+    console.log(commentListResult);
+    this.articleDetail = articleDetailResult.data;
   },
 
   /**
@@ -71,8 +83,36 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
+.dateInfo *:first-child {
+  margin-right: 15px;
+}
+
 .title {
+  margin-top: 10px;
   display: flex;
+  border-bottom: 1px solid black;
   justify-content: space-between;
+}
+
+.title__category {
+  margin-right: 10px;
+}
+
+.content {
+  margin-top: 10px;
+  padding: 10px 10px;
+  border: 1px dotted black;
+  height: 150px;
+  text-align: left;
+}
+
+.comments {
+  width: 90%;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.comments__input {
+  width: 80%;
 }
 </style>
