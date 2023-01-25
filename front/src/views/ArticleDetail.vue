@@ -62,8 +62,7 @@ export default {
     // path variable 획득
     const articleId = this.$route.params.id;
     const articleDetailResult = await articleAPI.getArticleDetail(articleId);
-    const commentListResult = await commentAPI.getComments(articleId);
-    console.log(commentListResult);
+    console.log(articleDetailResult);
     this.articleDetail = articleDetailResult.data;
   },
 

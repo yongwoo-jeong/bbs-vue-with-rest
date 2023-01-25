@@ -4,20 +4,18 @@ import com.springboot.bbsrestful.service.ArticleService;
 import com.springboot.bbsrestful.vo.ArticleVO;
 import com.springboot.bbsrestful.vo.BoardVO;
 import com.springboot.bbsrestful.vo.CategoryVO;
-import com.springboot.bbsrestful.vo.FileVO;
+import com.springboot.bbsrestful.vo.CommentVO;
 import com.springboot.bbsrestful.vo.SearchCriteriaVO;
+import java.util.HashMap;
 import java.util.List;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -57,15 +55,19 @@ public class ArticleController {
 	}
 
 	/**
-	 * GET /articles
-	 * 게시글 상세, 댓글, 파일 리스트 반환
+	 * GET /articles 게시글 상세, 댓글, 파일 리스트 반환
+	 *
 	 * @param id
 	 * @return
 	 */
 	@GetMapping("/api/v1/articles/{id}")
-	public ArticleVO articleDetailController(@PathVariable("id") Integer id){
+	public HashMap<String, Object> articleDetailController(@PathVariable("id") Integer id){
 		ArticleVO articleDetail = articleService.selectArticle(id);
-		return articleDetail;
+		List<CommentVO> commentList = articleService.selectCommentList(id);
+		HashMap<String,Object> detailPageSet = new HashMap<>();
+		detailPageSet.put("articleDetail",articleDetail);
+		detailPageSet.put("commentList",commentList);
+		return detailPageSet;
 	}
 
 	/**

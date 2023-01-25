@@ -1,8 +1,10 @@
 package com.springboot.bbsrestful.service;
 
 import com.springboot.bbsrestful.repository.ArticleRepository;
+import com.springboot.bbsrestful.repository.CommentRepository;
 import com.springboot.bbsrestful.vo.ArticleVO;
 import com.springboot.bbsrestful.vo.CategoryVO;
+import com.springboot.bbsrestful.vo.CommentVO;
 import com.springboot.bbsrestful.vo.SearchCriteriaVO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,11 @@ public class ArticleService {
 	 * 게시글 관련 데이터 리포지토리 객체
 	 */
 	private final ArticleRepository articleRepository;
+
+	/**
+	 * 코멘트 레포지토리 생성자
+	 */
+	private final CommentRepository commentRepository;
 
 	/**
 	 * 카테고리 리스트 위한 메서드
@@ -76,6 +83,13 @@ public class ArticleService {
 		return articleInserting.getArticleId();
 	}
 
-
+	/**
+	 * 게시글에 딸린 댓글 리스트를 컨트롤러로 보내주는 서비스
+	 * @param articleId 해당 게시글 id
+	 * @return
+	 */
+	public List<CommentVO> selectCommentList(Integer articleId){
+		return commentRepository.selectComments(articleId);
+	}
 }
 
