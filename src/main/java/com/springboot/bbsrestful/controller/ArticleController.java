@@ -1,6 +1,7 @@
 package com.springboot.bbsrestful.controller;
 
 import com.springboot.bbsrestful.service.ArticleService;
+import com.springboot.bbsrestful.service.FileService;
 import com.springboot.bbsrestful.vo.ArticleVO;
 import com.springboot.bbsrestful.vo.BoardVO;
 import com.springboot.bbsrestful.vo.CategoryVO;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 게시글 관련 요청 컨트롤러
@@ -31,6 +34,11 @@ public class ArticleController {
 	 * 게시글 관련 서비스 객체
 	 */
 	private final ArticleService articleService;
+
+	/**
+	 * 파일 서비스 객체
+	 */
+	private final FileService fileService;
 
 	@Value("${dev.file.localPath}")
 	private String serverFilePath;
@@ -78,11 +86,12 @@ public class ArticleController {
 	 */
 	@PostMapping(value = "/api/v1/articles")
 	public void insertArticleController(@ModelAttribute ArticleVO newArticle,
-//										@RequestParam("file") FileVO file,
+										@RequestPart("file") List<MultipartFile> files,
 										@RequestParam("passwordConfirm") String passwordConfirm)
 //										@ModelAttribute SearchCriteriaVO searchCriteria)
 										{
-		articleService.insertNewArticle(newArticle, passwordConfirm);
+		Integer articleId = articleService.insertNewArticle(newArticle, passwordConfirm);
+		fileService.insertNewFiles(files, articleId);
 //		String searchQueryString = req.getQueryString();
 	}
 

@@ -33,7 +33,11 @@ export default {
    */
   async post(url, formData) {
     try {
-      const res = await axiosInstance.post(url, formData);
+      const res = await axiosInstance.post(url, formData, {
+        headers: {
+          "Content-Type": `multipart/form-data`,
+        },
+      });
       return res;
     } catch (e) {
       console.log(e);

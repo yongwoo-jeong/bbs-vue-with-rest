@@ -18,7 +18,7 @@ const API_URL = {
 export const articleAPI = {
   /**
    * 검색조건에 따른 게시글리스트, 검색된 게시글 수, 카테고리 리스트 반환하는 API 호출
-   * @param {String} 검색조건 queryString
+   * @param {string} 검색조건 queryString
    * @returns BoardVO
    */
   getBoardInfo(queryParam) {
@@ -27,7 +27,7 @@ export const articleAPI = {
 
   /**
    * 게시글 정보 반환하는 API 호출
-   * @param {Number} 게시글 id
+   * @param {number} 게시글 id
    * @returns ArticleVO
    */
   getArticleDetail(articleId) {
@@ -47,8 +47,8 @@ export const articleAPI = {
 export const commentAPI = {
   /**
    *
-   * @param {*} articleId
-   * @param {*} newComment
+   * @param {string} articleId
+   * @param {string} newComment
    * @returns
    */
   postComment(articleId, newComment) {

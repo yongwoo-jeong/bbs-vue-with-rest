@@ -61,7 +61,13 @@ export default {
        * 게시글 상세정보
        */
       articleDetail: {},
+      /**
+       * 게시글에 따른 댓글 리스트
+       */
       commentList: {},
+      /**
+       * 새 댓글 내용 for v-model
+       */
       newComment: "",
     };
   },
@@ -73,16 +79,10 @@ export default {
     this.fetchArticleDetail();
   },
 
-  /**
-   * state로 부터 적절한 카테고리명 리턴
-   */
-  computed: {
-    categoryName: function () {
-      return this.$store.state.categoryObject[this.articleDetail.categoryId];
-    },
-  },
-
   methods: {
+    /**
+     * 게시글, 댓글 리스트 반환하는 API 에 요청 보내는메서드
+     */
     fetchArticleDetail: async function () {
       // path variable 획득
       const articleId = this.$route.params.id;
@@ -91,9 +91,17 @@ export default {
       this.commentList = articleDetailResult.data.commentList;
     },
 
+    /**
+     * input 입력된 댓글을 this.newComment 에 등록해주는 메서드
+     * @param 자바스크립트 이벤트객체
+     */
     onChagneCommentInput: function (e) {
       this.newComment = e.target.value;
     },
+
+    /**
+     * 댓글 입력 확인을 눌렀을 때 새 댓글을 POST 요청 보내는 메서드
+     */
     onClickSubmit: async function () {
       if (this.newComment.replaceAll(" ", "") == "") {
         alert("댓글을 입력해야합니다.");
@@ -102,12 +110,26 @@ export default {
       const formData = new FormData();
       formData.append("content", this.newComment);
       await commentAPI.postComment(this.$route.params.id, formData);
+      // 새 댓글 입력후엔 게시글/댓글 정보를 새롭게 받아옴
+      // 게시글, 댓글 받아오는 API 분리 후 댓글만 따로 페치하는게 맞지않나..
       this.fetchArticleDetail();
     },
   },
 
+  /**
+   * 댓글 리스트 리렌더를 위한 와쳐
+   */
   watch: {
     commentList() {},
+  },
+
+  /**
+   * state로 부터 적절한 카테고리명 리턴
+   */
+  computed: {
+    categoryName: function () {
+      return this.$store.state.categoryObject[this.articleDetail.categoryId];
+    },
   },
 };
 </script>
