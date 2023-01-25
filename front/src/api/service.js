@@ -31,9 +31,9 @@ export default {
    * @param {string} POST 요청 할 API URL
    * @returns
    */
-  async post(newArticle, url) {
+  async post(formData, url) {
     try {
-      const res = await axiosInstance.post(url, newArticle);
+      const res = await axiosInstance.post(url, formData);
       return res;
     } catch (e) {
       console.log(e);

@@ -112,6 +112,24 @@ export default {
     };
   },
 
+  /**
+   * API 서버로부터 게시글 리스트 페치
+   */
+  async created() {
+    await this.fetchArticleList();
+  },
+
+  watch: {
+    /**
+     * 페이징, 검색을 위해 라우트 쿼리가 바뀌면 리렌더하기 위한 와쳐메서드
+     */
+    $route(to, from) {
+      if (to !== from) {
+        this.fetchArticleList();
+      }
+    },
+  },
+
   methods: {
     /**
      * API 통해서 articleList, category List, searchedArticleCount 받아오는 메서드
@@ -137,22 +155,7 @@ export default {
       this.endDate = this.$route.query.endDate ?? "";
       this.categoryId = this.$route.query.categoryId ?? "";
       this.keyword = this.$route.query.keyword ?? "";
-      this.currentPage = this.$route.query.currentPage ?? "";
-    },
-  },
-
-  async created() {
-    await this.fetchArticleList();
-  },
-
-  watch: {
-    /**
-     * 페이징, 검색을 위해 라우트 쿼리가 바뀌면 리렌더하기 위한 와쳐메서드
-     */
-    $route(to, from) {
-      if (to !== from) {
-        this.fetchArticleList();
-      }
+      this.currentPage = this.$route.query.currentPage ?? "1";
     },
   },
 };

@@ -51,7 +51,7 @@ export default {
   async created() {
     // path variable 획득
     const articleId = this.$route.params.id;
-    const axiosResult = await api.getBoardDetail(articleId);
+    const axiosResult = await api.getArticleDetail(articleId);
     this.articleDetail = axiosResult.data;
   },
 

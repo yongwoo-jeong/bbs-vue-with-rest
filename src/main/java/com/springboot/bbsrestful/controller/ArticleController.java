@@ -4,17 +4,20 @@ import com.springboot.bbsrestful.service.ArticleService;
 import com.springboot.bbsrestful.vo.ArticleVO;
 import com.springboot.bbsrestful.vo.BoardVO;
 import com.springboot.bbsrestful.vo.CategoryVO;
+import com.springboot.bbsrestful.vo.FileVO;
 import com.springboot.bbsrestful.vo.SearchCriteriaVO;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -70,10 +73,12 @@ public class ArticleController {
 	 * TODO ENUM 통한 에러코드 고민
 	 * @return
 	 */
-	@PostMapping("/api/v1/articles")
-	public void insertArticleController(@Valid @ModelAttribute ArticleVO newArticle,
-										@RequestParam("passwordConfirm") String passwordConfirm,
-										@ModelAttribute SearchCriteriaVO searchCriteria) {
+	@PostMapping(value = "/api/v1/articles")
+	public void insertArticleController(@ModelAttribute ArticleVO newArticle,
+//										@RequestParam("file") FileVO file,
+										@RequestParam("passwordConfirm") String passwordConfirm)
+//										@ModelAttribute SearchCriteriaVO searchCriteria)
+										{
 		articleService.insertNewArticle(newArticle, passwordConfirm);
 //		String searchQueryString = req.getQueryString();
 	}

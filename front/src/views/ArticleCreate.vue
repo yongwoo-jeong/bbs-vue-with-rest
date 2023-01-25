@@ -53,12 +53,28 @@
         </tr>
         <tr>
           <th>파일 첨부</th>
-          <td></td>
+          <td>
+            <input type="file" id="file1" />
+            <input type="file" id="file2" />
+            <input type="file" id="file3" />
+          </td>
         </tr>
       </table>
       <div class="footer__button-containers">
-        <div @click="onCancel" class="footer__button__cancel">
-          <a>취소</a>
+        <div class="footer__button__cancel">
+          <RouterLink
+            :to="{
+              name: 'articleList',
+              query: {
+                startDate: queryString.startDate,
+                endDate: queryString.endDate,
+                categoryId: queryString.categoryId,
+                keyword: queryString.keyword,
+                currentPage: queryString.currentPage,
+              },
+            }"
+            ><a>취소</a></RouterLink
+          >
         </div>
         <div class="footer__button__submit">
           <input type="submit" value="저장" />
@@ -81,11 +97,24 @@ export default {
       writer: "",
       title: "",
       password: "",
-      passwordConfirm: "",
       content: "",
       categoryId: 1,
+      files: [],
+      passwordConfirm: "",
+      queryString: {
+        startDate: "",
+        endDate: "",
+        categoryId: "",
+        keyword: "",
+        currentPage: "",
+      },
     };
   },
+
+  mounted() {
+    this.setQueryString();
+  },
+
   methods: {
     /**
      * 필드 길이를 클라이언트에서 검증을 위한 메서드
@@ -117,9 +146,7 @@ export default {
       }
       return 1;
     },
-    onCancel: () => {
-      router.push("/articles");
-    },
+
     onSumbit: async function (event) {
       event.preventDefault();
       let isValidForm = this.validateForm();
@@ -133,9 +160,17 @@ export default {
       formData.append("passwordConfirm", this.passwordConfirm);
       formData.append("content", this.content);
       formData.append("categoryId", this.categoryId);
+      formData.append("passwordConfirm", this.passwordConfirm);
+
+      // 파일
+      const fileOne = document.getElementById("file1");
+      const fileTwo = document.getElementById("file2");
+      const fileThree = document.getElementById("file3");
+
       await api.postNewArticle(formData);
       router.push("/articles");
     },
+
     selectCategory(e) {
       this.categoryId = e.target.value;
     },
@@ -153,6 +188,17 @@ export default {
     },
     changeContent(e) {
       this.content = e.target.value;
+    },
+
+    /**
+     * 검색조건 유지를 위한 쿼리스트링 설정해주는 메서드
+     */
+    setQueryString() {
+      this.queryString.startDate = this.$route.query.startDate ?? "";
+      this.queryString.endDate = this.$route.query.endDate ?? "";
+      this.queryString.categoryId = this.$route.query.categoryId ?? "";
+      this.queryString.keyword = this.$route.query.keyword ?? "";
+      this.queryString.currentPage = this.$route.query.currentPage ?? "";
     },
   },
 };
@@ -222,5 +268,27 @@ td * {
 .footer__button__submit * {
   color: white;
   cursor: pointer;
+}
+
+.filebox label {
+  font-size: 12px;
+  width: 100px;
+  height: 30px;
+  display: inline-block;
+  padding: 10px 20px;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-left: 10px;
+  border: 1px dotted black;
+  text-align: center;
+}
+
+.filebox input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
 }
 </style>
