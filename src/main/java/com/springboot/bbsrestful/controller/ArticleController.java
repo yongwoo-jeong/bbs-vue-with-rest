@@ -1,15 +1,17 @@
 package com.springboot.bbsrestful.controller;
 
+import com.springboot.bbsrestful.dto.ArticleDetailDTO;
 import com.springboot.bbsrestful.service.ArticleService;
 import com.springboot.bbsrestful.service.FileService;
 import com.springboot.bbsrestful.vo.ArticleVO;
-import com.springboot.bbsrestful.vo.BoardVO;
+import com.springboot.bbsrestful.dto.BoardDTO;
 import com.springboot.bbsrestful.vo.CategoryVO;
 import com.springboot.bbsrestful.vo.CommentVO;
+import com.springboot.bbsrestful.vo.FileVO;
 import com.springboot.bbsrestful.vo.SearchCriteriaVO;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -51,7 +53,7 @@ public class ArticleController {
 	 * @return boardData 보드 VO
 	 */
 	@GetMapping("/api/v1/articles")
-	public BoardVO articleListController(@ModelAttribute SearchCriteriaVO searchCriteria){
+	public BoardDTO articleListController(@ModelAttribute SearchCriteriaVO searchCriteria){
 		// 카테고리명
 		List<CategoryVO> categories = articleService.selectCategories();
 		// DB SELECT LIMIT offset 설정
@@ -59,24 +61,25 @@ public class ArticleController {
 		// 게시글리스트, 게시글 숫자 담은 DTO
 		List<ArticleVO> searchedArticles = articleService.selectArticleList(searchCriteria);
 		int countArticles =  articleService.selectSearchedArticleCount(searchCriteria);
-		BoardVO boardData = BoardVO.builder().articleList(searchedArticles).searchedArticleCount(countArticles).categoryList(categories).build();
+		BoardDTO boardData = BoardDTO.builder().articleList(searchedArticles).searchedArticleCount(countArticles).categoryList(categories).build();
 		return boardData;
 	}
 
 	/**
 	 * GET /articles 게시글 상세, 댓글, 파일 리스트 반환
-	 *
-	 * @param id
+	 * @param articleId
 	 * @return
 	 */
 	@GetMapping("/api/v1/articles/{id}")
-	public HashMap<String, Object> articleDetailController(@PathVariable("id") Integer id){
-		ArticleVO articleDetail = articleService.selectArticle(id);
-		List<CommentVO> commentList = articleService.selectCommentList(id);
-		HashMap<String,Object> detailPageSet = new HashMap<>();
-		detailPageSet.put("articleDetail",articleDetail);
-		detailPageSet.put("commentList",commentList);
-		return detailPageSet;
+	public ArticleDetailDTO articleDetailController(@PathVariable("id") Integer articleId){
+		ArticleVO articleDetail = articleService.selectArticle(articleId);
+		List<CommentVO> commentList = articleService.selectCommentList(articleId);
+		List<FileVO> fileList = fileService.getFileList(articleId);
+		ArticleDetailDTO articleDetailDto = ArticleDetailDTO.builder()
+				.articleDetail(articleDetail)
+				.commentList(commentList)
+				.fileList(fileList).build();
+		return articleDetailDto;
 	}
 
 	/**
@@ -88,8 +91,7 @@ public class ArticleController {
 	public void insertArticleController(@ModelAttribute ArticleVO newArticle,
 										@RequestPart("file") List<MultipartFile> files,
 										@RequestParam("passwordConfirm") String passwordConfirm)
-//										@ModelAttribute SearchCriteriaVO searchCriteria)
-										{
+			throws UnsupportedEncodingException {
 		Integer articleId = articleService.insertNewArticle(newArticle, passwordConfirm);
 		fileService.insertNewFiles(files, articleId);
 //		String searchQueryString = req.getQueryString();
@@ -103,7 +105,5 @@ public class ArticleController {
 	@PostMapping("/api/v1/articles/{id}/comments")
 	public void insertComment(@PathVariable("id") Integer articleId,@ModelAttribute CommentVO newComment){
 		articleService.insertNewComment(articleId,newComment);
-		// 댓글 POST 요청 후 이전 페이지로 돌리기 위한 referer
-//		return "redirect:/article?"+req.getQueryString();
 	}
 }

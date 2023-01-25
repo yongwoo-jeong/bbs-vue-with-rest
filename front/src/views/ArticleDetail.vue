@@ -19,7 +19,11 @@
       <div class="content">
         <a>{{ articleDetail.content }}</a>
       </div>
-      <div class="files"></div>
+      <div class="files" @click="onClickFile">
+        <a v-for="file in fileList" :key="file.fileUuid" :id="file.fileUuid">
+          {{ file.nameOriginal }}{{ file.fileUuid }}
+        </a>
+      </div>
       <div class="comments">
         <div
           class="comments__content"
@@ -47,7 +51,8 @@
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
-import { articleAPI, commentAPI } from "@/api/api";
+import { articleAPI, commentAPI, fileAPI } from "@/api/api";
+import axios from "axios";
 
 export default {
   name: "ArticleDetail",
@@ -64,7 +69,11 @@ export default {
       /**
        * 게시글에 따른 댓글 리스트
        */
-      commentList: {},
+      commentList: [],
+      /**
+       * 게시글에 따른 파일리스트
+       */
+      fileList: [],
       /**
        * 새 댓글 내용 for v-model
        */
@@ -89,6 +98,7 @@ export default {
       const articleDetailResult = await articleAPI.getArticleDetail(articleId);
       this.articleDetail = articleDetailResult.data.articleDetail;
       this.commentList = articleDetailResult.data.commentList;
+      this.fileList = articleDetailResult.data.fileList;
     },
 
     /**
@@ -110,9 +120,28 @@ export default {
       const formData = new FormData();
       formData.append("content", this.newComment);
       await commentAPI.postComment(this.$route.params.id, formData);
+      // 댓글 입력 후 input value 초기화
+      this.newComment = "";
       // 새 댓글 입력후엔 게시글/댓글 정보를 새롭게 받아옴
       // 게시글, 댓글 받아오는 API 분리 후 댓글만 따로 페치하는게 맞지않나..
       this.fetchArticleDetail();
+    },
+
+    onClickFile: async function (e) {
+      const res = await axios.get(
+        `http://localhost:8080/api/v1/file/${e.target.id}`,
+        {
+          responseType: "blob",
+        }
+      );
+      console.log(res);
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "구직.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
     },
   },
 

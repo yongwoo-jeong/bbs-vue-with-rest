@@ -10,6 +10,8 @@ const API_URL = {
   // 댓글
   insertComment: (args) =>
     process.env.VUE_APP_API_VERSION + `articles/${args}/comments`,
+
+  fileDownload: (args) => process.env.VUE_APP_API_VERSION + `file/${args}`,
 };
 
 /**
@@ -53,5 +55,11 @@ export const commentAPI = {
    */
   postComment(articleId, newComment) {
     return service.post(API_URL.insertComment(articleId), newComment);
+  },
+};
+
+export const fileAPI = {
+  getFileDownload(fileUuid) {
+    return service.get(API_URL.fileDownload(fileUuid));
   },
 };

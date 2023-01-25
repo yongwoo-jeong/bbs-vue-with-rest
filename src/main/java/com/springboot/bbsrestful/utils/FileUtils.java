@@ -14,10 +14,7 @@ public class FileUtils {
 	 */
 	public static boolean isFileEmpty(MultipartFile file){
 		// 파일명없거나(null) 파일 사이즈가 0일 경우 빈 파일
-		if (file.getOriginalFilename() == null || file.getSize() == 0) {
-			return true;
-		}
-		return false;
+		return file.getOriginalFilename() == null || file.getSize() == 0;
 	}
 
 }

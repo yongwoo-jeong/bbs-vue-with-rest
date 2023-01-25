@@ -1,5 +1,7 @@
-package com.springboot.bbsrestful.vo;
+package com.springboot.bbsrestful.dto;
 
+import com.springboot.bbsrestful.vo.ArticleVO;
+import com.springboot.bbsrestful.vo.CategoryVO;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class BoardVO {
+public class BoardDTO {
 
 	/**
 	 * 검색된 게시글 전체

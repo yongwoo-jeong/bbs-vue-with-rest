@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+/**
+ * 파일 VO
+ */
 @Getter
 @Setter
 @Builder
