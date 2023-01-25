@@ -70,7 +70,14 @@
         <td>{{ article.modifiedAt }}</td>
       </tr>
     </table>
-    <Pagination :totalArticles="searchedCount" />
+    <Pagination
+      :totalArticles="searchedCount"
+      :startDate="startDate"
+      :endDate="endDate"
+      :categoryId="categoryId"
+      :keyword="keyword"
+      :currentPage="currentPage"
+    />
     <a class="create__button">
       <RouterLink
         :to="{
