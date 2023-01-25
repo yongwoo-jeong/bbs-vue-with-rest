@@ -91,5 +91,15 @@ public class ArticleService {
 	public List<CommentVO> selectCommentList(Integer articleId){
 		return commentRepository.selectComments(articleId);
 	}
+
+	/**
+	 * 새 댓글 추가 서비스 메서드
+	 * @param articleId 댓글 입력 대상 게시글 ID
+	 * @param newComment 새 댓글 객체
+	 */
+	public void insertNewComment(Integer articleId, CommentVO newComment){
+		newComment.setArticleId(articleId);
+		commentRepository.insertComment(newComment);
+	}
 }
 

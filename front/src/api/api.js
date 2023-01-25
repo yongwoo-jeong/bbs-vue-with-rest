@@ -8,8 +8,8 @@ const API_URL = {
   insertArticle: process.env.VUE_APP_API_VERSION + "articles",
   articleDetail: (args) => process.env.VUE_APP_API_VERSION + `articles/${args}`,
   // 댓글
-  commentList: (args) => process.env.VUE_APP_API_VERSION + `comments/${args}`,
-  insertComment: (args) => process.env.VUE_APP_API_VERSION + `comments/${args}`,
+  insertComment: (args) =>
+    process.env.VUE_APP_API_VERSION + `articles/${args}/comments`,
 };
 
 /**
@@ -40,12 +40,18 @@ export const articleAPI = {
    * @returns
    */
   postNewArticle(newArticle) {
-    return service.post(newArticle, API_URL.insertArticle);
+    return service.post(API_URL.insertArticle, newArticle);
   },
 };
 
 export const commentAPI = {
-  getComments(articleId) {
-    return service.get(`${API_URL.commentList(articleId)}`);
+  /**
+   *
+   * @param {*} articleId
+   * @param {*} newComment
+   * @returns
+   */
+  postComment(articleId, newComment) {
+    return service.post(API_URL.insertComment(articleId), newComment);
   },
 };

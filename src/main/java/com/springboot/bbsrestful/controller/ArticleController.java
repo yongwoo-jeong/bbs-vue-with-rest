@@ -8,6 +8,7 @@ import com.springboot.bbsrestful.vo.CommentVO;
 import com.springboot.bbsrestful.vo.SearchCriteriaVO;
 import java.util.HashMap;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -85,4 +86,15 @@ public class ArticleController {
 //		String searchQueryString = req.getQueryString();
 	}
 
+	/**
+	 * 새 댓글 POST 요청 컨트롤러
+	 * @param articleId
+	 * @param newComment
+	 */
+	@PostMapping("/api/v1/articles/{id}/comments")
+	public void insertComment(@PathVariable("id") Integer articleId,@ModelAttribute CommentVO newComment){
+		articleService.insertNewComment(articleId,newComment);
+		// 댓글 POST 요청 후 이전 페이지로 돌리기 위한 referer
+//		return "redirect:/article?"+req.getQueryString();
+	}
 }
