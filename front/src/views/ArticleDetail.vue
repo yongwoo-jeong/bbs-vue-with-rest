@@ -44,7 +44,25 @@
           <input type="submit" value="등록" @click.prevent="onClickSubmit" />
         </div>
       </div>
-      <div class="buttons"></div>
+      <div class="buttons">
+        <div class="button__back">
+          <RouterLink
+            :to="{
+              name: 'articleList',
+              query: {
+                startDate,
+                endDate,
+                categoryId,
+                keyword,
+                currentPage,
+              },
+            }"
+            >목록</RouterLink
+          >
+        </div>
+        <div class="button__modify">수정</div>
+        <div class="button__delete">삭제</div>
+      </div>
     </main>
   </body>
 </template>
@@ -159,6 +177,21 @@ export default {
     categoryName: function () {
       return this.$store.state.categoryObject[this.articleDetail.categoryId];
     },
+    startDate: function () {
+      return this.$route.query.startDate;
+    },
+    endDate: function () {
+      return this.$route.query.endDate;
+    },
+    categoryId: function () {
+      return this.$route.query.categoryId;
+    },
+    keyword: function () {
+      return this.$route.query.keyword;
+    },
+    currentPage: function () {
+      return this.$route.query.currentPage;
+    },
   },
 };
 </script>
@@ -209,5 +242,9 @@ export default {
   margin-top: 10px;
   width: 80%;
   height: 30px;
+}
+
+.buttons {
+  display: flex;
 }
 </style>

@@ -53,6 +53,7 @@
             :to="{
               name: 'articleDetail',
               params: { id: article.articleId },
+              query: { startDate, endDate, categoryId, keyword, currentPage },
             }"
           >
             {{ article.title }}
@@ -144,14 +145,14 @@ export default {
       const boardInfo = axiosResult.data;
       this.articleList = boardInfo.articleList;
       this.searchedCount = boardInfo.searchedArticleCount;
-      this.setQueryString();
+      this.setDataFromQuery();
       return boardInfo;
     },
 
     /**
-     * 검색조건 유지를 위한 쿼리스트링 설정해주는 메서드
+     * 쿼리스트링으로 가져온 검색조건을 뷰 인스턴스 데이터에 주입
      */
-    setQueryString() {
+    setDataFromQuery() {
       this.startDate = this.$route.query.startDate ?? "";
       this.endDate = this.$route.query.endDate ?? "";
       this.categoryId = this.$route.query.categoryId ?? "";
