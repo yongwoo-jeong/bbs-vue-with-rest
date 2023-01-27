@@ -30,14 +30,19 @@ const routes = [
   },
   {
     path: "/articles/new",
-    component: () => import("@/views/ArticleCreate"),
-    name: "newArticleForm",
+    component: () => import("@/views/ArticleForm"),
+    name: "articleForm",
     props: true,
   },
   {
-    path: "/aritlces/:id/",
+    path: "/articles/:id/",
     component: () => import("@/views/ArticleDetail"),
-    name: "",
+  },
+  {
+    path: "/articles/:id/edit",
+    component: () => import("@/views/ArticleForm"),
+    name: "articleDetail",
+    props: true,
   },
 ];
 

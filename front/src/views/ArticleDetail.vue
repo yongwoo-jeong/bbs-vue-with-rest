@@ -4,17 +4,12 @@
     <main>
       <div class="writer">
         <span>{{ articleDetail.writer }}</span>
-        <div class="dateInfo">
-          <span>등록일시 {{ articleDetail.createdAt }}</span>
-          <span>수정일시 {{ articleDetail.modifiedAt ?? "-" }}</span>
-        </div>
       </div>
       <div class="title">
         <div>
           <span class="title__category">[{{ categoryName }}]</span>
           <span>{{ articleDetail.title }}</span>
         </div>
-        <span>조회수: {{ articleDetail.view }}</span>
       </div>
       <div class="content">
         <a>{{ articleDetail.content }}</a>

@@ -5,17 +5,20 @@
       <table style="border-collapse: collapse">
         <tr>
           <th>카테고리*</th>
-          <td>
+          <td v-if="isCreating === true">
             <label for="category"></label>
             <select name="categoryId" id="category" @change="selectCategory">
               <option
-                v-for="category in this.$store.state.categoryList"
+                v-for="category in $store.state.categoryList"
                 :key="category.categoryId"
                 :value="category.categoryId"
               >
                 {{ category.categoryName }}
               </option>
             </select>
+          </td>
+          <td v-if="isCreating === false">
+            <a>{{ $store.state.categoryObject[1] }}</a>
           </td>
         </tr>
         <tr>
@@ -26,10 +29,10 @@
         </tr>
         <tr>
           <th>비밀번호*</th>
-          <td>
+          <td v-if="isCreating === true">
             <input
               :value="password"
-              @input="changePassword"
+              @input="onChangePassword"
               type="password"
               placeholder="비밀번호"
             />
@@ -40,10 +43,20 @@
               placeholder="비밀번호 확인"
             />
           </td>
+          <td v-if="isCreating === false">
+            <input
+              :value="password"
+              @input="onChangePassword"
+              type="password"
+              placeholder="비밀번호"
+            />
+          </td>
         </tr>
         <tr>
           <th>제목*</th>
-          <td><input :value="title" @input="changeTitle" /></td>
+          <td>
+            <input :value="title" @input="changeTitle" />
+          </td>
         </tr>
         <tr>
           <th>내용*</th>
@@ -53,11 +66,12 @@
         </tr>
         <tr>
           <th>파일 첨부</th>
-          <td>
+          <td v-if="isCreating === true">
             <input type="file" id="file1" />
             <input type="file" id="file2" />
             <input type="file" id="file3" />
           </td>
+          <td v-if="isCreating === false">{{}}</td>
         </tr>
       </table>
       <div class="footer__button-containers">
@@ -86,14 +100,24 @@
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
-import { api, articleAPI } from "@/api/api";
+import { articleAPI } from "@/api/api";
 import router from "@/router";
 
 export default {
-  name: "newArticleForm",
+  name: "articleForm",
   components: { HeaderTitle },
+  computed: {
+    isCreating: function () {
+      if (this.$route.path === "/articles/new") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
   data() {
     return {
+      // Form for CREATE or MODIFY article
       writer: "",
       title: "",
       password: "",
@@ -167,8 +191,14 @@ export default {
       const fileTwo = document.getElementById("file2");
       const fileThree = document.getElementById("file3");
 
-      await articleAPI.postNewArticle(formData);
-      router.push("/articles");
+      if (this.isCreating === true) {
+        await articleAPI.postNewArticle(formData);
+        router.push("/articles");
+      }
+
+      if (this.isCreating === false) {
+        // 게시글 수정API 페칭
+      }
     },
 
     selectCategory(e) {
@@ -180,7 +210,7 @@ export default {
     changeTitle(e) {
       this.title = e.target.value;
     },
-    changePassword(e) {
+    onChangePassword(e) {
       this.password = e.target.value;
     },
     changePasswordConfirm(e) {
@@ -259,6 +289,12 @@ td * {
 .footer__button__cancel {
   background-color: rgba(0, 0, 0, 0.15);
   cursor: pointer;
+}
+
+.footer__button__cancel * {
+  padding: 5px 15px;
+  color: black;
+  text-decoration: none;
 }
 
 .footer__button__submit {
