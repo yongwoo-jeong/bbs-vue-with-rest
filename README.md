@@ -33,7 +33,10 @@
   - [ ] URI에 일관적인 명명 규칙을 적용. 컬렉션을 참조하는 URI에 대해 복수 명사를 사용
   - [ ] URI는 우선 직관적이도록 설계
   - [ ] HTTP 응답 코드 준수
-  - [ ]
+  
 
-
+고민
+- [ ] 검색조건 상태유지의 반복 코드
+- [ ] 파일명 저장 (UNICODE to UTF-8 from Content-Disposition - not working)
+- [ ] 새 게시글과 게시글 수정 FORM 
 

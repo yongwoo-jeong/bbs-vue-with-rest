@@ -60,7 +60,10 @@
             >목록</RouterLink
           >
         </div>
-        <div class="button__modify">수정</div>
+        <div class="button__modify" @click="isModifiedModal = !isModifiedModal">
+          수정
+        </div>
+        <PasswordModal v-if="isModifiedModal === true" />
         <div class="button__delete">삭제</div>
       </div>
     </main>
@@ -69,6 +72,7 @@
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
+import PasswordModal from "@/components/PassworModal.vue";
 import { articleAPI, commentAPI, fileAPI } from "@/api/api";
 import axios from "axios";
 
@@ -76,6 +80,7 @@ export default {
   name: "ArticleDetail",
   components: {
     HeaderTitle,
+    PasswordModal,
   },
 
   data() {
@@ -96,6 +101,7 @@ export default {
        * 새 댓글 내용 for v-model
        */
       newComment: "",
+      isModifiedModal: false,
     };
   },
 
@@ -246,5 +252,24 @@ export default {
 
 .buttons {
   display: flex;
+}
+
+.button__back,
+.button__modify,
+.button__delete {
+  width: 100px;
+  height: 20px;
+  border: 1px solid black;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.25);
+  margin: 5px;
+}
+
+.button__back * {
+  padding: 30px;
+  color: black;
+  text-decoration: none;
 }
 </style>
