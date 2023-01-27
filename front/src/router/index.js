@@ -34,6 +34,11 @@ const routes = [
     name: "newArticleForm",
     props: true,
   },
+  {
+    path: "/aritlces/:id/",
+    component: () => import("@/views/ArticleDetail"),
+    name: "",
+  },
 ];
 
 const router = createRouter({

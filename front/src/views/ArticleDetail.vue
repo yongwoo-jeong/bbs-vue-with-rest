@@ -63,8 +63,15 @@
         <div class="button__modify" @click="isModifiedModal = !isModifiedModal">
           수정
         </div>
-        <PasswordModal v-if="isModifiedModal === true" />
+        <PasswordModal
+          v-if="isModifiedModal === true"
+          pageDestination="modify"
+        />
         <div class="button__delete">삭제</div>
+        <PasswordModal
+          v-if="isModifiedModal === true"
+          pageDestination="delete"
+        />
       </div>
     </main>
   </body>
@@ -72,7 +79,7 @@
 
 <script>
 import HeaderTitle from "@/components/HeaderTitle.vue";
-import PasswordModal from "@/components/PassworModal.vue";
+import PasswordModal from "@/components/PasswordModal.vue";
 import { articleAPI, commentAPI, fileAPI } from "@/api/api";
 import axios from "axios";
 
@@ -257,9 +264,11 @@ export default {
 .button__back,
 .button__modify,
 .button__delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100px;
-  height: 20px;
-  border: 1px solid black;
+  height: 25px;
   color: black;
   text-decoration: none;
   cursor: pointer;

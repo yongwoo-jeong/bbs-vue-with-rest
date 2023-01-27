@@ -4,9 +4,8 @@ import service from "./service";
  * API SERVER PATH
  */
 const API_URL = {
-  articleList: (args) => process.env.VUE_APP_API_VERSION + `articles${args}`,
-  insertArticle: process.env.VUE_APP_API_VERSION + "articles",
-  articleDetail: (args) => process.env.VUE_APP_API_VERSION + `articles/${args}`,
+  articles: (args) => process.env.VUE_APP_API_VERSION + `articles${args}`,
+  articleId: (args) => process.env.VUE_APP_API_VERSION + `articles/${args}`,
   // 댓글
   insertComment: (args) =>
     process.env.VUE_APP_API_VERSION + `articles/${args}/comments`,
@@ -24,7 +23,7 @@ export const articleAPI = {
    * @returns BoardVO
    */
   getBoardInfo(queryParam) {
-    return service.get(`${API_URL.articleList(queryParam)}`);
+    return service.get(`${API_URL.articles(queryParam)}`);
   },
 
   /**
@@ -33,7 +32,7 @@ export const articleAPI = {
    * @returns ArticleVO
    */
   getArticleDetail(articleId) {
-    return service.get(`${API_URL.articleDetail(articleId)}`);
+    return service.get(`${API_URL.articleId(articleId)}`);
   },
 
   /**
@@ -42,7 +41,7 @@ export const articleAPI = {
    * @returns
    */
   postNewArticle(newArticle) {
-    return service.post(API_URL.insertArticle, newArticle);
+    return service.post(API_URL.articles(""), newArticle);
   },
 };
 
