@@ -43,6 +43,10 @@ export const articleAPI = {
   postNewArticle(newArticle) {
     return service.post(API_URL.articles(""), newArticle);
   },
+
+  deleteArticle(articleId, formData) {
+    return service.delete(`${API_URL.articleId(articleId)}`, formData);
+  },
 };
 
 export const commentAPI = {

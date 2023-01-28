@@ -78,4 +78,11 @@ public class ArticleRepository {
 		session.update(mapperName +".updateViewCount", articleId);
 	};
 
+	/**
+	 * 게시글 삭제
+	 * @param articleId 게시글 id
+	 */
+	public void deleteArticle(Integer articleId){
+		session.delete(mapperName+".deleteArticle", articleId);
+	}
 }

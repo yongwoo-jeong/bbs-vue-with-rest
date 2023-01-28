@@ -29,6 +29,8 @@
 
 <script>
 import router from "@/router";
+import { articleAPI } from "@/api/api";
+
 export default {
   name: "PassworCheckModal",
   created() {},
@@ -61,7 +63,13 @@ export default {
         router.push(`/articles/${articleId}/edit`);
       }
       if (this.pageDestination === "delete") {
-        router.push(``);
+        const formData = new FormData();
+        formData.append("_method", "delete");
+        formData.append("articleId", articleId);
+        articleAPI.deleteArticle(articleId, formData);
+        // window location 보다 더 나은 방법..
+        // 페이지 refresh 없이 article List 만 업데이트 할 수 있는 방법으로..
+        window.location.href = process.env.VUE_APP_ROOT_URL;
       }
     },
   },

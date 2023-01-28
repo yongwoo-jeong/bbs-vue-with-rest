@@ -2,6 +2,7 @@ package com.springboot.bbsrestful.service;
 
 import com.springboot.bbsrestful.repository.ArticleRepository;
 import com.springboot.bbsrestful.repository.CommentRepository;
+import com.springboot.bbsrestful.repository.FileRepository;
 import com.springboot.bbsrestful.vo.ArticleVO;
 import com.springboot.bbsrestful.vo.CategoryVO;
 import com.springboot.bbsrestful.vo.CommentVO;
@@ -26,6 +27,11 @@ public class ArticleService {
 	 * 코멘트 레포지토리 생성자
 	 */
 	private final CommentRepository commentRepository;
+
+	/**
+	 * 파일 레포지토리 생성자
+	 */
+	private final FileRepository fileRepository;
 
 	/**
 	 * 카테고리 리스트 위한 메서드
@@ -100,6 +106,17 @@ public class ArticleService {
 	public void insertNewComment(Integer articleId, CommentVO newComment){
 		newComment.setArticleId(articleId);
 		commentRepository.insertComment(newComment);
+	}
+
+	/**
+	 * 게시글을 삭제해주는 서비스컴포넌트
+	 * 관련 파일, 댓글들도 모두 삭제
+	 * @param articleId
+	 */
+	public void deleteArticle(Integer articleId){
+		commentRepository.deleteComments(articleId);
+		fileRepository.deleteFiles(articleId);
+		articleRepository.deleteArticle(articleId);
 	}
 }
 

@@ -125,6 +125,7 @@ export default {
     /**
      * 페이징, 검색을 위해 라우트 쿼리가 바뀌면 리렌더하기 위한 와쳐메서드
      */
+    articleList() {},
     $route(to, from) {
       if (to !== from) {
         this.fetchArticleList();

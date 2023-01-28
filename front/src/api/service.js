@@ -44,4 +44,13 @@ export default {
       return e;
     }
   },
+
+  async delete(url, formData) {
+    try {
+      const res = await axiosInstance.delete(url, formData);
+      return res;
+    } catch (e) {
+      return e;
+    }
+  },
 };

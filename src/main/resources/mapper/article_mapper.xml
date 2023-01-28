@@ -92,17 +92,18 @@
     WHERE  article_id = #{articleId}
   </update>
 
-<!--  &lt;!&ndash;  삭제 &ndash;&gt;-->
-<!--  <delete id="deleteArticle">-->
-<!--    DELETE FROM article-->
-<!--    WHERE article_id= #{articleId}-->
-<!--  </delete>-->
-<!--  &lt;!&ndash; 업데이트  &ndash;&gt;-->
-<!--  <update id="updateArticle">-->
-<!--  UPDATE article-->
-<!--  SET writer=#{writer}, title=#{title}, content=#{content}, modified_at=NOW()-->
-<!--  WHERE article_id = #{articleId}-->
-<!--  </update>-->
+  <!--  삭제 -->
+  <delete id="deleteArticle">
+    DELETE FROM article
+    WHERE article_id= #{articleId}
+  </delete>
+
+  <!-- 업데이트  -->
+  <update id="updateArticle">
+  UPDATE article
+  SET writer=#{writer}, title=#{title}, content=#{content}, modified_at=NOW()
+  WHERE article_id = #{articleId}
+  </update>
 
 
 </mapper>
