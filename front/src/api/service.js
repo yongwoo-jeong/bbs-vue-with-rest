@@ -15,9 +15,9 @@ export default {
    * @param  {String} GET 요청을 보낼 주소
    * @returns
    */
-  async get(url) {
+  async get(url, config) {
     try {
-      const res = await axiosInstance.get(url);
+      const res = await axiosInstance.get(url, config);
       return res;
     } catch (e) {
       return e;
@@ -25,7 +25,7 @@ export default {
   },
 
   /**
-   * 새 게시글 등록 POST 요청을 보내는 메서드
+   * POST 요청을 보내는 메서드
    * TODO 에러 발생한 경우 에러페이지로 유도
    * @param {FormData} 새 게시글 정보가 담긴 폼데이터
    * @param {string} POST 요청 할 API URL
@@ -40,8 +40,9 @@ export default {
       return e;
     }
   },
+
   /**
-   * 새 게시글 등록 POST 요청을 보내는 메서드
+   * multipart POST 요청을 보내는 메서드
    * TODO 에러 발생한 경우 에러페이지로 유도
    * @param {FormData} 새 게시글 정보가 담긴 폼데이터
    * @param {string} POST 요청 할 API URL

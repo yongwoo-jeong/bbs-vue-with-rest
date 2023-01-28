@@ -16,7 +16,7 @@
       </div>
       <div class="files" @click="onClickFile">
         <a v-for="file in fileList" :key="file.fileUuid" :id="file.fileUuid">
-          {{ file.nameOriginal }}{{ file.fileUuid }}
+          {{ file.nameOriginal }}
         </a>
       </div>
       <div class="comments">
@@ -156,19 +156,14 @@ export default {
 
     /**
      * 파일 다운로드 메서드
-     * @param {*} e
+     * @param {*} event
      */
-    onClickFile: async function (e) {
-      const res = await axios.get(
-        `http://localhost:8080/api/v1/file/${e.target.id}`,
-        {
-          responseType: "blob",
-        }
-      );
+    onClickFile: async function (event) {
+      const res = await fileAPI.getFileDownload(event.target.id);
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "구직.xlsx");
+      link.setAttribute("download", event.target.text);
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);

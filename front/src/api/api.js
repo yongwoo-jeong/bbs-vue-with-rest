@@ -23,7 +23,7 @@ export const articleAPI = {
    * @returns BoardVO
    */
   getBoardInfo(queryParam) {
-    return service.get(`${API_URL.articles(queryParam)}`);
+    return service.get(`${API_URL.articles(queryParam)}`, {});
   },
 
   /**
@@ -32,7 +32,7 @@ export const articleAPI = {
    * @returns ArticleVO
    */
   getArticleDetail(articleId) {
-    return service.get(`${API_URL.articleId(articleId)}`);
+    return service.get(`${API_URL.articleId(articleId)}`, {});
   },
 
   /**
@@ -64,6 +64,8 @@ export const commentAPI = {
 
 export const fileAPI = {
   getFileDownload(fileUuid) {
-    return service.get(API_URL.fileDownload(fileUuid));
+    return service.get(API_URL.fileDownload(fileUuid), {
+      responseType: "blob",
+    });
   },
 };

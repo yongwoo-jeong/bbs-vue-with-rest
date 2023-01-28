@@ -189,10 +189,6 @@ export default {
       formData.append("content", this.content);
       formData.append("categoryId", this.categoryId);
 
-      // 파일
-      const fileOne = document.getElementById("file1");
-      const fileTwo = document.getElementById("file2");
-      const fileThree = document.getElementById("file3");
       const files = document.querySelectorAll("input[type=file]");
 
       if (this.isCreating) {
