@@ -56,7 +56,6 @@ export default {
         return;
       }
       const articleId = this.$route.params.id;
-      console.log(this.pageDestination);
       // 서버에서 비밀번호 불러와서 비교검증 X
       // 서버로 비밀번호 보내서 검증한 뒤 status 코드 확인 후 리디렉션..
       if (this.pageDestination === "modify") {

@@ -165,7 +165,6 @@ export default {
           responseType: "blob",
         }
       );
-      console.log(res);
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -236,6 +235,11 @@ export default {
   border: 1px dotted black;
   height: 150px;
   text-align: left;
+}
+
+.files {
+  display: flex;
+  flex-direction: column;
 }
 
 .comments {

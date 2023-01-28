@@ -41,6 +41,7 @@ export const articleAPI = {
    * @returns
    */
   postNewArticle(newArticle) {
+    console.log(API_URL.articles(""));
     return service.post(API_URL.articles(""), newArticle);
   },
 

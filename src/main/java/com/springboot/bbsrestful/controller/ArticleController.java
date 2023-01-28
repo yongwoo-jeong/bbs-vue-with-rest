@@ -89,15 +89,14 @@ public class ArticleController {
 	/**
 	 * 폼을 통해 받은 새 게시글 정보 POST 요청 처리
 	 * TODO ENUM 통한 에러코드 고민
-	 *
 	 * @return
 	 */
 	@PostMapping(value = "/api/v1/articles")
 	public void insertArticleController(@ModelAttribute ArticleVO newArticle,
-			@RequestPart("file") List<MultipartFile> files,
+			@RequestPart(value = "file", required = false) List<MultipartFile> file,
 			@RequestParam("passwordConfirm") String passwordConfirm) {
 		Integer articleId = articleService.insertNewArticle(newArticle, passwordConfirm);
-		fileService.insertNewFiles(files, articleId);
+		fileService.insertNewFiles(file, articleId);
 //		String searchQueryString = req.getQueryString();
 	}
 
@@ -116,10 +115,10 @@ public class ArticleController {
 	/**
 	 * 게시글 삭제 컨트롤러
 	 *
-	 * @param articleId         게시글 id
+	 * @param articleId 게시글 id
 	 */
 	@DeleteMapping("/api/v1/articles/{id}")
-	public void deleteArticleController(@PathVariable("id") Integer articleId){
+	public void deleteArticleController(@PathVariable("id") Integer articleId) {
 		articleService.deleteArticle(articleId);
 //	    need to check password from server
 //		System.out.println(userInputPassword);

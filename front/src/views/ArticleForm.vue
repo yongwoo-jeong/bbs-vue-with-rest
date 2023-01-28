@@ -109,7 +109,6 @@ export default {
   components: { HeaderTitle },
   computed: {
     isCreating: function () {
-      console.log(this.$route.path);
       if (this.$route.path === "/articles/new") {
         return true;
       } else {
@@ -189,14 +188,20 @@ export default {
       formData.append("passwordConfirm", this.passwordConfirm);
       formData.append("content", this.content);
       formData.append("categoryId", this.categoryId);
-      formData.append("passwordConfirm", this.passwordConfirm);
 
       // 파일
       const fileOne = document.getElementById("file1");
       const fileTwo = document.getElementById("file2");
       const fileThree = document.getElementById("file3");
+      const files = document.querySelectorAll("input[type=file]");
 
       if (this.isCreating) {
+        const fileArray = [...files];
+        fileArray.forEach((file) => {
+          if (file.value !== "") {
+            formData.append("file", file.files[0]);
+          }
+        });
         await articleAPI.postNewArticle(formData);
         router.push("/articles");
       }
