@@ -3,22 +3,25 @@
     <div class="modal__content">
       <h3>비밀번호 확인</h3>
       <div class="modal__table-container">
-        <table>
-          <tr>
-            <th>비밀번호*</th>
-            <td>
-              <form @submit.prevent="submitPassword">
+        <form @submit.prevent="submitPassword">
+          <table>
+            <tr>
+              <th>비밀번호*</th>
+              <td>
                 <input
                   type="password"
                   placeholder="비밀번호를 입력해주세요"
                   :value="userInputPassword"
                   @input="userInputPasswordChange"
                 />
-                <input type="submit" value="확인" />
-              </form>
-            </td>
-          </tr>
-        </table>
+              </td>
+            </tr>
+          </table>
+          <div>
+            <button @click="$parent.closeModal">취소</button>
+            <input type="submit" value="확인" />
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -35,19 +38,30 @@ export default {
   },
   props: {
     pageDestination: String,
+    password: String,
   },
   methods: {
     userInputPasswordChange(e) {
       this.userInputPassword = e.target.value;
-      console.log(this.userInputPassword);
     },
-
     /**
      * 수정 혹은은
      */
     submitPassword() {
+      if (this.userInputPassword !== this.password) {
+        alert("비밀번호가 일치하지 않습니다");
+      }
       // 서버에서 비밀번호 불러와서 비교검증 X
       // 서버로 비밀번호 보내서 검증한 뒤 status 코드 확인 후 리디렉션..
+      if (this.pageDestination === "modify") {
+        return;
+      }
+      if (this.pageDestination === "delete") {
+        return;
+      }
+    },
+    onEmit: function () {
+      this.$emit("closeModal");
     },
   },
 };
@@ -63,12 +77,14 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.55);
 }
 
 .modal__content {
   width: 500px;
   height: 200px;
   background-color: white;
+  border: 1px solid black;
+  box-shadow: 5px 5px 3px #666;
 }
 </style>

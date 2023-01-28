@@ -55,17 +55,19 @@
             >목록</RouterLink
           >
         </div>
-        <div class="button__modify" @click="isModifiedModal = !isModifiedModal">
+        <div class="button__modify" @click="isModalOpen = !isModalOpen">
           수정
         </div>
         <PasswordModal
-          v-if="isModifiedModal === true"
+          v-if="isModalOpen === true"
           pageDestination="modify"
+          :password="articleDetail.password"
         />
         <div class="button__delete">삭제</div>
         <PasswordModal
-          v-if="isModifiedModal === true"
+          v-if="isModalOpen === true"
           pageDestination="delete"
+          :password="articleDetail.password"
         />
       </div>
     </main>
@@ -103,7 +105,7 @@ export default {
        * 새 댓글 내용 for v-model
        */
       newComment: "",
-      isModifiedModal: false,
+      isModalOpen: false,
     };
   },
 
@@ -153,6 +155,10 @@ export default {
       this.fetchArticleDetail();
     },
 
+    /**
+     * 파일 다운로드 메서드
+     * @param {*} e
+     */
     onClickFile: async function (e) {
       const res = await axios.get(
         `http://localhost:8080/api/v1/file/${e.target.id}`,
@@ -169,6 +175,13 @@ export default {
       link.click();
       link.parentNode.removeChild(link);
     },
+
+    /**
+     * 모달창 닫기
+     */
+    closeModal: function () {
+      this.isModalOpen = false;
+    },
   },
 
   /**
@@ -179,7 +192,7 @@ export default {
   },
 
   /**
-   * state로 부터 적절한 카테고리명 리턴
+   * state로부터 적절한 카테고리명 리턴
    */
   computed: {
     categoryName: function () {

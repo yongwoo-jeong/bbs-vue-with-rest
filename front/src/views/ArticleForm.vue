@@ -5,7 +5,7 @@
       <table style="border-collapse: collapse">
         <tr>
           <th>카테고리*</th>
-          <td v-if="isCreating === true">
+          <td v-if="isCreating">
             <label for="category"></label>
             <select name="categoryId" id="category" @change="selectCategory">
               <option
@@ -17,7 +17,7 @@
               </option>
             </select>
           </td>
-          <td v-if="isCreating === false">
+          <td v-if="!isCreating">
             <a>{{ $store.state.categoryObject[1] }}</a>
           </td>
         </tr>
@@ -29,7 +29,7 @@
         </tr>
         <tr>
           <th>비밀번호*</th>
-          <td v-if="isCreating === true">
+          <td v-if="isCreating">
             <input
               :value="password"
               @input="onChangePassword"
@@ -43,7 +43,7 @@
               placeholder="비밀번호 확인"
             />
           </td>
-          <td v-if="isCreating === false">
+          <td v-if="!isCreating">
             <input
               :value="password"
               @input="onChangePassword"
@@ -66,17 +66,18 @@
         </tr>
         <tr>
           <th>파일 첨부</th>
-          <td v-if="isCreating === true">
+          <td v-if="isCreating">
             <input type="file" id="file1" />
             <input type="file" id="file2" />
             <input type="file" id="file3" />
           </td>
-          <td v-if="isCreating === false">{{}}</td>
+          <td v-if="!isCreating">{{}}</td>
         </tr>
       </table>
       <div class="footer__button-containers">
         <div class="footer__button__cancel">
           <RouterLink
+            v-if="isCreating"
             :to="{
               name: 'articleList',
               query: {
@@ -108,6 +109,7 @@ export default {
   components: { HeaderTitle },
   computed: {
     isCreating: function () {
+      console.log(this.$route.path);
       if (this.$route.path === "/articles/new") {
         return true;
       } else {
@@ -137,6 +139,9 @@ export default {
 
   mounted() {
     this.setQueryString();
+    if (this.isCreating === false) {
+      this.setArticleDetail();
+    }
   },
 
   methods: {
@@ -191,12 +196,12 @@ export default {
       const fileTwo = document.getElementById("file2");
       const fileThree = document.getElementById("file3");
 
-      if (this.isCreating === true) {
+      if (this.isCreating) {
         await articleAPI.postNewArticle(formData);
         router.push("/articles");
       }
 
-      if (this.isCreating === false) {
+      if (!this.isCreating) {
         // 게시글 수정API 페칭
       }
     },
@@ -229,6 +234,18 @@ export default {
       this.queryString.categoryId = this.$route.query.categoryId ?? "";
       this.queryString.keyword = this.$route.query.keyword ?? "";
       this.queryString.currentPage = this.$route.query.currentPage ?? "";
+    },
+
+    /**
+     * 게시글 수정 시 인풋 필드에 내용 주입
+     */
+    async setArticleDetail() {
+      const articleId = this.$route.params.id;
+      const articleDetailResult = await articleAPI.getArticleDetail(articleId);
+      const articleDetail = articleDetailResult.data.articleDetail;
+      this.writer = articleDetail.writer;
+      this.title = articleDetail.title;
+      this.content = articleDetail.content;
     },
   },
 };

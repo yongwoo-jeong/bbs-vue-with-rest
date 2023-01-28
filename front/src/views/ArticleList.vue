@@ -76,7 +76,7 @@
     <a class="create__button">
       <RouterLink
         :to="{
-          path: '/articles/new',
+          name: 'newArticleForm',
           query: { startDate, endDate, categoryId, keyword, currentPage },
         }"
       >
