@@ -55,17 +55,16 @@
             >목록</RouterLink
           >
         </div>
-        <div class="button__modify" @click="isModalOpen = !isModalOpen">
-          수정
-        </div>
+        <div class="button__modify" @click="modalFor = 'modify'">수정</div>
         <PasswordModal
-          v-if="isModalOpen === true"
+          v-if="modalFor === 'modify'"
           pageDestination="modify"
           :password="articleDetail.password"
+          @closeModal="modalFor = 'none'"
         />
-        <div class="button__delete">삭제</div>
+        <div class="button__delete" @click="modalFor = 'delete'">삭제</div>
         <PasswordModal
-          v-if="isModalOpen === true"
+          v-if="modalFor === 'delete'"
           pageDestination="delete"
           :password="articleDetail.password"
         />
@@ -105,7 +104,7 @@ export default {
        * 새 댓글 내용 for v-model
        */
       newComment: "",
-      isModalOpen: false,
+      modalFor: "none",
     };
   },
 
@@ -174,13 +173,6 @@ export default {
       document.body.appendChild(link);
       link.click();
       link.parentNode.removeChild(link);
-    },
-
-    /**
-     * 모달창 닫기
-     */
-    closeModal: function () {
-      this.isModalOpen = false;
     },
   },
 

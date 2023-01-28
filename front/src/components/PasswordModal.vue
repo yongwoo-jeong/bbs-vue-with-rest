@@ -18,7 +18,7 @@
             </tr>
           </table>
           <div>
-            <button @click="$parent.closeModal">취소</button>
+            <button @click="$emit('closeModal')">취소</button>
             <input type="submit" value="확인" />
           </div>
         </form>
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import router from "@/router";
 export default {
   name: "PassworCheckModal",
   created() {},
@@ -50,18 +51,18 @@ export default {
     submitPassword() {
       if (this.userInputPassword !== this.password) {
         alert("비밀번호가 일치하지 않습니다");
+        return;
       }
+      const articleId = this.$route.params.id;
+      console.log(this.pageDestination);
       // 서버에서 비밀번호 불러와서 비교검증 X
       // 서버로 비밀번호 보내서 검증한 뒤 status 코드 확인 후 리디렉션..
       if (this.pageDestination === "modify") {
-        return;
+        router.push(`/articles/${articleId}/edit`);
       }
       if (this.pageDestination === "delete") {
-        return;
+        router.push(``);
       }
-    },
-    onEmit: function () {
-      this.$emit("closeModal");
     },
   },
 };
